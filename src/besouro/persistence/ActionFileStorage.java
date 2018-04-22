@@ -8,25 +8,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import besouro.model.Action;
+import besouro.model.action.Action;
 import besouro.stream.ActionOutputStream;
 
 public class ActionFileStorage implements ActionOutputStream {
 
-	private File file;
 	private FileWriter writer;
 
-	public ActionFileStorage(File f) {
+	public ActionFileStorage(File file) {
 		try {
-			
-			this.file = f;
-			
 			if (!file.exists()) {
 				file.createNewFile();
 			}
 			
-			writer = new FileWriter(file,true);
-			
+			writer = new FileWriter(file, true);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -34,11 +29,9 @@ public class ActionFileStorage implements ActionOutputStream {
 
 	public void addAction(Action action) {
 		try {
-			
-			writer.write(action.toString());
+			writer.write(String.valueOf(action));
 			writer.write("\n");
 			writer.flush();
-			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -51,27 +44,21 @@ public class ActionFileStorage implements ActionOutputStream {
 			throw new RuntimeException(e);
 		}
 	}
-
 	
 	public static Action[] loadFromFile(File file) {
-		
 		if (!file.exists()) {
 			return null;
 		}
 		
 		try {
-			
 			List<Action> list = new ArrayList<Action>();
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			
 			for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-				
-				if (line != null) {
-					list.add(Action.fromString(line));
-				}
-				
-			};
+				list.add(Action.fromString(line));
+			}
 			
+			reader.close();
 			return list.toArray(new Action[list.size()]);
 			
 		} catch (Exception e) {
