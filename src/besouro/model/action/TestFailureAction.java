@@ -1,23 +1,26 @@
-package besouro.model;
+package besouro.model.action;
 
 import java.util.Date;
 import java.util.StringTokenizer;
 
-public class UnitTestCaseAction extends UnitTestAction {
+public class TestFailureAction extends UnitTestAction {
 
 	private String testcase;
-	protected String failureMessage;
+	private String failureMessage;
 	
-	public UnitTestCaseAction(Date clock, String workspaceFile) {
+	public TestFailureAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
+		super.setSuccessValue(false);
 	}
 
-	public UnitTestCaseAction(StringTokenizer tok) {
+	public TestFailureAction(StringTokenizer tok) {
 		super(tok);
+		super.setSuccessValue(false);
 	}
 
-	public UnitTestCaseAction(Date date, String string, boolean b) {
+	public TestFailureAction(Date date, String string, boolean b) {
 		super(date, string, b);
+		super.setSuccessValue(false);
 	}
 
 	public void setTestCase(String testcase) {

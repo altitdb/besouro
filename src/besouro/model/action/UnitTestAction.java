@@ -1,9 +1,9 @@
-package besouro.model;
+package besouro.model.action;
 
 import java.util.Date;
 import java.util.StringTokenizer;
 
-public abstract class UnitTestAction extends ResourceAction {
+public class UnitTestAction extends ResourceAction {
 
 	private boolean success = true;
 
@@ -31,7 +31,7 @@ public abstract class UnitTestAction extends ResourceAction {
 	
 	@Override
 	public String toString() {
-		return super.toString() + " " + (this.isSuccessful()?"OK":"FAIL");
+		return super.toString() + " " + (this.isSuccessful()? "OK" : "FAIL");
 	}
 
 }

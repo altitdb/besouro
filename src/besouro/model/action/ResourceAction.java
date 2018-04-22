@@ -1,9 +1,7 @@
-package besouro.model;
+package besouro.model.action;
 
 import java.util.Date;
 import java.util.StringTokenizer;
-
-import org.eclipse.core.resources.IResource;
 
 /**
  * Defines generic software development actions, which is an independent

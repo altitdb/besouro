@@ -1,10 +1,8 @@
-package besouro.model;
+package besouro.model.action;
 
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import org.eclipse.core.resources.IResource;
 
 public class JavaFileAction extends ResourceAction {
 
@@ -21,7 +19,6 @@ public class JavaFileAction extends ResourceAction {
 	private boolean isTestEdit;
 
 	private int fileSizeIncrease;
-
 	
 	private JavaFileAction previousAction;
 

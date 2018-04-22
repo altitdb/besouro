@@ -1,4 +1,4 @@
-package besouro.model;
+package besouro.model.action;
 
 import java.util.Date;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
  * 
  * @author Hongbing Kou
  */
-public class RefactoringAction extends ResourceAction {
+public class ProductionCodingAction extends ResourceAction {
 
 	private String op;
 	private String subjectType;
@@ -40,11 +40,11 @@ public class RefactoringAction extends ResourceAction {
 		return this.subjectName;
 	}
 
-	public RefactoringAction(Date clock, String workspaceFile) {
+	public ProductionCodingAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
 	}
 
-	public RefactoringAction(StringTokenizer tok) {
+	public ProductionCodingAction(StringTokenizer tok) {
 		super(tok);
 		setOperator(tok.nextToken());
 		setSubjectName(tok.nextToken());

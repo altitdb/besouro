@@ -6,18 +6,21 @@ import java.util.StringTokenizer;
 public class TestSuccessfullAction extends UnitTestAction {
 
 	private String testcase;
-	protected String failureMessage;
+	private String failureMessage;
 	
 	public TestSuccessfullAction(Date clock, String workspaceFile) {
 		super(clock, workspaceFile);
+		super.setSuccessValue(true);
 	}
 
 	public TestSuccessfullAction(StringTokenizer tok) {
 		super(tok);
+		super.setSuccessValue(true);
 	}
 
 	public TestSuccessfullAction(Date date, String string, boolean b) {
 		super(date, string, b);
+		super.setSuccessValue(true);
 	}
 
 	public void setTestCase(String testcase) {

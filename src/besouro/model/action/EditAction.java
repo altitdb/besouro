@@ -1,4 +1,4 @@
-package besouro.model;
+package besouro.model.action;
 
 import java.util.Date;
 import java.util.StringTokenizer;
@@ -17,22 +17,4 @@ public class EditAction extends JavaFileAction {
 		super(tok);
 	}
 
-	public String toString() {
-		
-		return super.toString();
-		
-//		StringBuffer buf = new StringBuffer();
-//
-//		if (this.isTestEdit()) {
-//			buf.append("SAVE TEST ");
-//
-//		} else {
-//			buf.append("SAVE PRODUCTION ");
-//		}
-//
-//		buf.append(getResource());
-//		
-//		return buf.toString();
-	}
-	
 }

@@ -1,10 +1,14 @@
-package besouro.model;
+package besouro.model.action;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import besouro.listeners.FileOpenedAction;
+import besouro.measure.CompilationAction;
+import besouro.others.UnitTestSessionAction;
 
 /**
  * Implements abstract command for build data or cli data.
@@ -23,7 +27,6 @@ public abstract class Action implements Comparable<Action> {
 		return this.clock;
 	}
 	
-	//TODO clean up unecessary methods from classes.
 	public int compareTo(Action o) {
 		return this.clock.compareTo(o.clock);
 	}
@@ -41,20 +44,20 @@ public abstract class Action implements Comparable<Action> {
 	public static Action fromString(String line) {
 		Action action = null;
 		
-		StringTokenizer tok = new StringTokenizer(line," ");
+		StringTokenizer tok = new StringTokenizer(line, " ");
 		String className = tok.nextToken();
 		
 		if (className.equals("EditAction")) {
 			action = new EditAction(tok);
 		
 		} else if (className.equals("UnitTestCaseAction")) {
-			action = new UnitTestCaseAction(tok);
+			action = new TestFailureAction(tok);
 		
 		} else if (className.equals("UnitTestSessionAction")) {
 			action = new UnitTestSessionAction(tok);
 			
 		} else if (className.equals("RefactoringAction")) {
-			action = new RefactoringAction(tok);
+			action = new ProductionCodingAction(tok);
 			
 		} else if (className.equals("FileOpenedAction")) {
 			action = new FileOpenedAction(tok);
