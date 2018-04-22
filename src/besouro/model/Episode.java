@@ -3,24 +3,24 @@ package besouro.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import besouro.model.action.Action;
+
 public class Episode {
 
 	private String category;
 	private String subtype;
-	private Boolean isTDD;
-	private int duration;
+	private Integer duration;
 	private List<Action> actions = new ArrayList<Action>();
-	
-
 	private Episode previousEpisode;
-	private long timestamp;
+	private Long timestamp;
+	private Boolean disagree = false;
 	
-	/**	indicates, only visually in episode view, that user have disagred with the classification */
-	private boolean disagree;
+	public Episode() {
+		
+	}
 
 	public void setPreviousEpisode(Episode previousEpisode) {
 		this.previousEpisode = previousEpisode;
-		
 	}
 	
 	public void setClassification(String category, String subtype) {
@@ -45,38 +45,27 @@ public class Episode {
 		return subtype;
 	}
 
-	public void setIsTDD(boolean isTDD) {
-		this.isTDD = isTDD;
-	}
-
 	public Boolean isTDD() {
-		return isTDD;
+		return DevelopmentType.TEST_DRIVEN_DEVELOPMENT.equals(category);
 	}
 
 	public void setDuration(int i) {
 		this.duration = i;
-		
 	}
 
 	public int getDuration() {
-		
 		long first;
 		
 		if (previousEpisode != null && previousEpisode.getLastAction()!=null){
 			first = previousEpisode.getLastAction().getClock().getTime();
-			
 		} else if (actions.size()>0) {
 			first = actions.get(0).getClock().getTime();
-			
 		} else {
-			// used for testing
 			return duration;
-			
 		}
 		
 		long last = actions.get(actions.size()-1).getClock().getTime();
 		return (int) (last-first)/1000;
-		
 	}
 
 	@Override
