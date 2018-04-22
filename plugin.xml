@@ -7,7 +7,7 @@
             class="besouro.plugin.EpisodeView"
             icon="icons/episode.png"
             id="besouro.plugin.EpisodeView"
-            name="episodeView"
+            name="EpisodeView"
             restorable="true">
       </view>
    </extension>
