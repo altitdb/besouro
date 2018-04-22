@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.text.DocumentEvent;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
@@ -17,46 +16,35 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import besouro.measure.JavaStatementMeter;
-import besouro.model.FileOpenedAction;
 import besouro.plugin.Activator;
 import besouro.stream.ActionOutputStream;
 
-
 public class WindowListener implements IWindowListener, IPartListener, IDocumentListener {
 
-	private ActionOutputStream stream;
+	//TODO private ActionOutputStream stream;
 	private IWorkbench workbench;
-
 	private JavaStatementMeter measurer = new JavaStatementMeter();
 	
 	public WindowListener(ActionOutputStream stream) {
-		this.stream = stream;
+		//this.stream = stream;
 	}
 
-	/**
-	 * For testing purposes
-	 */
 	public void setWorkbench(IWorkbench workbench) {
 		this.workbench = workbench;
 	}
 
 	public void windowOpened(IWorkbenchWindow window) {
-
-		if (workbench == null)
+		if (workbench == null) {
 			workbench = Activator.getDefault().getWorkbench();
+		}
 
 		IWorkbenchWindow[] activeWindows = workbench.getWorkbenchWindows();
 
 		for (int i = 0; i < activeWindows.length; i++) {
-
-			// not using doclistener
-//			installDocumentListener(activeWindows[i].getActivePage().getActiveEditor());
-
 			IWorkbenchPage activePage = activeWindows[i].getActivePage();
 			if (activePage != null) {
 				activePage.addPartListener(this);
 				registerFileOpenAction(activePage.getActiveEditor());
-				
 			}
 
 		}
@@ -66,17 +54,13 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 	}
 
 	public void windowActivated(IWorkbenchWindow window) {
-		// not using doclistener
-//		installDocumentListener(window.getActivePage().getActiveEditor());
 	}
 
 	public void partOpened(IWorkbenchPart part) {
-		registerFileOpenAction(part);
+		//registerFileOpenAction(part);
 	}
 
 	public void partActivated(IWorkbenchPart part) {
-		// not using doclistener
-//		installDocumentListener(part);
 	}
 
 	public void partBroughtToTop(IWorkbenchPart part) {
@@ -92,29 +76,18 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 	}
 
 	public void documentChanged(DocumentEvent event) {
-		// [data] we can use it to generate small detailed edit events. Is it necessary?
 	}
 
 	public void windowClosed(IWorkbenchWindow window) {
 	}
 
-//	private void installDocumentListener(IWorkbenchPart part) {
-//		if (part instanceof ITextEditor) {
-//			ITextEditor activeTextEditor = (ITextEditor) part;
-//			IDocument document = activeTextEditor.getDocumentProvider().getDocument(activeTextEditor.getEditorInput());
-//			document.addDocumentListener(this);
-//		}
-//	}
 
 	private void registerFileOpenAction(IWorkbenchPart part) {
-
 		if (part instanceof ITextEditor) {
-
 			ITextEditor textEditor = (ITextEditor) part;
 			IEditorInput input = textEditor.getEditorInput();
 			
 			if (input instanceof IFileEditorInput) {
-				
 				IFileEditorInput fileInput = (IFileEditorInput) input;
 				IFile file = fileInput.getFile();
 				FileOpenedAction action = new FileOpenedAction(new Date(), file.getName());
@@ -127,17 +100,11 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 				action.setStatementsCount(meter.getNumOfStatements());
 				action.setTestMethodsCount(meter.getNumOfTestMethods());
 				action.setTestAssertionsCount(meter.getNumOfTestAssertions());
-				
-				stream.addAction(action);
-				
+				//TODO stream.addAction(action);
 			}
-
 		}
 	}
 	
-	/**
-	 * for testing purposes
-	 */
 	public void setMeasurer(JavaStatementMeter meter) {
 		this.measurer = meter;
 	}

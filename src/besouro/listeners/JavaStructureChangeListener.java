@@ -2,7 +2,6 @@ package besouro.listeners;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
@@ -12,7 +11,10 @@ import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 
-import besouro.model.RefactoringAction;
+import besouro.model.action.ProductionCodingAction;
+import besouro.model.action.TestAction;
+import besouro.model.action.TestCodingAction;
+import besouro.model.action.TestCreationAction;
 import besouro.stream.ActionOutputStream;
 
 
@@ -20,12 +22,19 @@ import besouro.stream.ActionOutputStream;
  * Listens to the java element change events to get incremental work on java
  * objects and collect refactoring information for test-driven development
  * analysis purpose. It's declared as package private so that it can only be
- * instantiated by Eclise sensor.
+ * instantiated by Eclipse sensor.
  * 
  * @author Hongbing Kou
  */
 public class JavaStructureChangeListener implements IElementChangedListener {
 
+	private static final String TEST_PACKAGE = "/test/";
+	private static final String REMOVE_OPERATION = "REMOVE";
+	private static final String ADD_OPERATION = "ADD";
+	private static final String CHANGE_OPERATION = "CHANGE";
+	private static final String METHOD_TYPE = "METHOD";
+	private static final String PACKAGE_TYPE = "PACKAGE";
+	private static final String CLASS_TYPE = "CLASS";
 	public static final String JAVA = "java";
 	public static final String CLASS = "Class";
 
@@ -43,9 +52,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	}
 
 	public void elementChanged(ElementChangedEvent event) {
-		// IJavaElementDelta jed = event.getDelta().getAffectedChildren()[0];
 		IJavaElementDelta[] childrenChanges = event.getDelta().getAffectedChildren();
-
 		if (childrenChanges != null && childrenChanges.length > 0) {
 			javaObjectChange(childrenChanges[0]);
 		}
@@ -54,152 +61,137 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	private void javaObjectChange(IJavaElementDelta jed) {
 		List<IJavaElementDelta> additions = new ArrayList<IJavaElementDelta>();
 		List<IJavaElementDelta> deletions = new ArrayList<IJavaElementDelta>();
+		List<IJavaElementDelta> changes = new ArrayList<IJavaElementDelta>();
+		traverse(jed, additions, deletions, changes);
 
-		// Traverse the delta change tree for refactoring activity
-		traverse(jed, additions, deletions);
-
-		// Gets the location of java file.
 		IResource javaFile = jed.getElement().getResource();
 
-		// No java structure change
-		if (additions.isEmpty() && deletions.isEmpty()) {
-			return;
+		if (deletions.size() == 1 && additions.size() == 1) {
+			IJavaElementDelta fromDelta = deletions.get(0);
+			IJavaElementDelta toDelta = additions.get(0);
 
-			// Addition, deletion, renaming activity.
-		} else if (additions.size() == 1 || deletions.size() == 1) {
-
-			if (deletions.isEmpty()) {
-				processUnary(javaFile, "ADD", (IJavaElementDelta) additions.get(0));
-
-			} else if (additions.isEmpty()) {
-				processUnary(javaFile, "REMOVE", (IJavaElementDelta) deletions.get(0));
-
-			} else if (deletions.size() == 1) {
-
-				IJavaElementDelta fromDelta = (IJavaElementDelta) deletions.get(0);
-				IJavaElementDelta toDelta = (IJavaElementDelta) additions.get(0);
-
-				if (fromDelta.getElement().getParent().equals(toDelta.getElement().getParent())) {
-					processRenameRefactor(javaFile, fromDelta, toDelta);
-
-				} else {
-					processMoveRefactor(fromDelta, toDelta);
+			if (fromDelta.getElement().getParent().equals(toDelta.getElement().getParent())) {
+				processRename(javaFile, fromDelta, toDelta);
+			} else {
+				processMove(fromDelta, toDelta);
+			}
+		} else if (!additions.isEmpty()) {
+			for (IJavaElementDelta i : additions) {
+				processUnary(javaFile, ADD_OPERATION, i);
+			}
+		} else if (!deletions.isEmpty()) {
+			for (IJavaElementDelta i : deletions) {
+				if (!i.toString().contains("{PRIMARY WORKING COPY}")) {
+					processUnary(javaFile, REMOVE_OPERATION, i);
 				}
-
 			}
-		}
-		// Massive addition by copying
-		else if (additions.size() > 1) {
-
-			for (Iterator i = additions.iterator(); i.hasNext();) {
-				processUnary(javaFile, "ADD",(IJavaElementDelta) i.next());
-			}
-		}
-		// Massive block deletion
-		else if (deletions.size() > 1) {
-			for (Iterator i = deletions.iterator(); i.hasNext();) {
-				processUnary(javaFile, "REMOVE",(IJavaElementDelta) i.next());
+		} else if (!changes.isEmpty()){
+			for (IJavaElementDelta i : changes) {
+				processUnary(javaFile, CHANGE_OPERATION, i);
 			}
 		}
 	}
 
-
-	private void processUnary(IResource javaFile, String op, IJavaElementDelta delta) {
+	private void processUnary(IResource javaFile, String operation, IJavaElementDelta delta) {
 		
 		IJavaElement element = delta.getElement();
-
-		// Stop if there is no associated element.
 		if (javaFile == null || element == null || element.getResource() == null) {
 			return;
 		}
 
 		String type = retrieveType(element);
-		// If type is not field, method, import and class do nothing.
 		if (type == null) {
 			return;
 		}
-
+ 
 		IPath classFileName = javaFile.getLocation();
-		if ("CLASS".equals(type)) {
+		if (CLASS_TYPE.equals(type)) {
 			classFileName = element.getResource().getLocation();
 		}
 
-		// Only deal with java file.
-		if (!JAVA.equals(classFileName.getFileExtension())) {
-
-			return;
-		}
-
-		String name = buildElementName(element.toString());
-		if (name != null && !"".equals(name)) {
-
-			RefactoringAction action = new RefactoringAction(new Date(), element.getResource().getName());
-			action.setOperator(op);
-			action.setSubjectType(type);
-			action.setSubjectName(name);
-
-			this.stream.addAction(action);
-
+		if (JAVA.equals(classFileName.getFileExtension())) {
+			String name = buildElementName(element.toString());
+			if (name != null && !"".equals(name)) {
+				if (classFileName.toString().contains(TEST_PACKAGE)) {
+					TestAction action;
+					if (METHOD_TYPE.equals(type) && ADD_OPERATION.equals(operation)) {
+						action = new TestCreationAction(new Date(), element.getResource().getName());
+					} else {
+						action = new TestCodingAction(new Date(), element.getResource().getName());
+					}
+					action.setOperator(operation);
+					action.setSubjectType(type);
+					action.setSubjectName(name);
+					this.stream.addAction(action);
+				} else {
+					ProductionCodingAction action = new ProductionCodingAction(new Date(), element.getResource().getName());
+					action.setOperator(operation);
+					action.setSubjectType(type);
+					action.setSubjectName(name);
+					this.stream.addAction(action);
+				}
+			}
 		}
 	}
 
-	private void processRenameRefactor(IResource javaFile, IJavaElementDelta fromDelta, IJavaElementDelta toDelta) {
+	private void processRename(IResource javaFile, IJavaElementDelta fromDelta, IJavaElementDelta toDelta) {
 
 		String type = retrieveType(toDelta.getElement());
 
 		IPath classFileName = javaFile.getLocation();
-		if ("CLASS".equals(type)) {
-			classFileName = fromDelta.getElement().getResource().getLocation();
-
-		} else if ("PACKAGE".equals(type)) {
+		if (CLASS_TYPE.equals(type) || PACKAGE_TYPE.equals(type)) {
 			classFileName = fromDelta.getElement().getResource().getLocation();
 		}
 
-		// Only deal with java file.
-		if (!JAVA.equals(classFileName.getFileExtension())) {
-			return;
-		}
-
-		String fromName = buildElementName(fromDelta.getElement().toString());
-		String toName = buildElementName(toDelta.getElement().toString());
-
-		if (fromName != null && !"".equals(fromName) && toName != null && !"".equals(toName)) {
-
-			RefactoringAction action = new RefactoringAction(new Date(), javaFile.getName());
-			action.setOperator("RENAME");
-			action.setSubjectName(fromName + "=>" + toName);
-
-			action.setSubjectType(type);
-
-			this.stream.addAction(action);
-
+		if (JAVA.equals(classFileName.getFileExtension())) {
+			String fromName = buildElementName(fromDelta.getElement().toString());
+			String toName = buildElementName(toDelta.getElement().toString());
+			
+			if (fromName != null && toName != null && !fromName.equals(toName)) {
+				if (classFileName.toString().contains(TEST_PACKAGE)) {
+					TestCodingAction action = new TestCodingAction(new Date(), javaFile.getName());
+					action.setOperator("RENAME");
+					action.setSubjectName(fromName + "=>" + toName);
+					action.setSubjectType(type);
+					this.stream.addAction(action);
+				} else {
+					ProductionCodingAction action = new ProductionCodingAction(new Date(), javaFile.getName());
+					action.setOperator("RENAME");
+					action.setSubjectName(fromName + "=>" + toName);
+					action.setSubjectType(type);
+					this.stream.addAction(action);
+				}
+			}
 		}
 	}
 
-	private void processMoveRefactor(IJavaElementDelta fromDelta, IJavaElementDelta toDelta) {
+	private void processMove(IJavaElementDelta fromDelta, IJavaElementDelta toDelta) {
 
+		String type = retrieveType(toDelta.getElement());
+		
 		IResource javaFile = fromDelta.getElement().getResource();
 		IJavaElement from = fromDelta.getElement();
 		IJavaElement to = toDelta.getElement().getParent();
 
-		// Only deal with java file.
-		if (!JAVA.equals(javaFile.getFileExtension())) {
-			return;
-		}
-
-		String fromName = buildElementName(from.toString());
-		String toName = buildElementName(to.toString());
-
-		if (fromName != null && !"".equals(fromName) && toName != null && !"".equals(toName)) {
-
-			RefactoringAction action = new RefactoringAction(new Date(), javaFile.getName());
-			action.setOperator("MOVE");
-			action.setSubjectName(fromName + "=>" + toName);
-
-			action.setSubjectType(retrieveType(toDelta.getElement()));
-
-			this.stream.addAction(action);
-
+		if (JAVA.equals(javaFile.getFileExtension())) {
+			String fromName = buildElementName(from.toString());
+			String toName = buildElementName(to.toString());
+			
+			if (fromName != null && toName != null && !fromName.equals(toName)) {
+				if (javaFile.toString().contains(TEST_PACKAGE)) {
+					TestCodingAction action = new TestCodingAction(new Date(), javaFile.getName());
+					action.setOperator("MOVE");
+					action.setSubjectName(fromName + "=>" + toName);
+					action.setSubjectType(type);
+					this.stream.addAction(action);
+				} else {
+					ProductionCodingAction action = new ProductionCodingAction(new Date(), javaFile.getName());
+					action.setOperator("MOVE");
+					action.setSubjectName(fromName + "=>" + toName);
+					action.setSubjectType(type);
+					this.stream.addAction(action);
+				}
+			}
 		}
 	}
 
@@ -210,55 +202,57 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 		case IJavaElement.FIELD:
 			return "FIELD";
 		case IJavaElement.METHOD:
-			return "METHOD";
+			return METHOD_TYPE;
 		case IJavaElement.IMPORT_DECLARATION:
 			return "IMPORT";
 		case IJavaElement.IMPORT_CONTAINER:
 			return "IMPORT";
 		case IJavaElement.COMPILATION_UNIT:
-			return "CLASS";
+			return CLASS_TYPE;
 		case IJavaElement.JAVA_PROJECT:
-			return "CLASS";
+			return CLASS_TYPE;
 		case IJavaElement.PACKAGE_FRAGMENT:
-			return "PACKAGE";
+			return PACKAGE_TYPE;
 		default:
 			return null;
 		}
 	}
 
 	private String buildElementName(String name) {
-
-		int index = name.indexOf('[');
-		if (index >=0)
-			name = name.substring(0, index);
-		
-		// Trim off the meaningless "(not open)" string
-		int pos = name.indexOf("(not open)");
-		if (pos > 0) {
-			name = name.substring(0, pos);
+		if (name.startsWith("[Working copy] ")) {
+			name = name.replace("[Working copy] ", "");
+			int index = name.indexOf('[');
+			if (index >=0) {
+				name = name.substring(0, index);
+			}
+		} else {
+			int index = name.indexOf('[');
+			if (index >=0) {
+				name = name.substring(0, index);
+			}
+			int pos = name.indexOf("(not open)");
+			if (pos > 0) {
+				name = name.substring(0, pos);
+			}
 		}
 
-		// take off the '#' if it exists
 		name = name.replace('#', '/');
-
 		return name.trim();
 	}
 
 
-	private void traverse(IJavaElementDelta delta, List<IJavaElementDelta> additions, List<IJavaElementDelta> deletions) {
-
-		// Saves the addition and deletion.
+	private void traverse(IJavaElementDelta delta, List<IJavaElementDelta> additions, List<IJavaElementDelta> deletions, List<IJavaElementDelta> changes) {
 		if (delta.getKind() == IJavaElementDelta.ADDED) {
 			additions.add(delta);
-
 		} else if (delta.getKind() == IJavaElementDelta.REMOVED) {
 			deletions.add(delta);
+		} else if (delta.getKind() == IJavaElementDelta.CHANGED) {
+			changes.add(delta);
 		}
 
-		// Recursively look for changes on children elements.
 		IJavaElementDelta[] children = delta.getAffectedChildren();
 		for (int i = 0; i < children.length; i++) {
-			traverse(children[i], additions, deletions);
+			traverse(children[i], additions, deletions, changes);
 		}
 	}
 }

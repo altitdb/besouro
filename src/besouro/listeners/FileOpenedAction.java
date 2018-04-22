@@ -1,8 +1,10 @@
-package besouro.model;
+package besouro.listeners;
 
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import besouro.model.action.JavaFileAction;
 
 public class FileOpenedAction extends JavaFileAction {
 

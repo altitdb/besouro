@@ -19,9 +19,9 @@ import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.junit.model.ITestSuiteElement;
 
-import besouro.model.UnitTestAction;
-import besouro.model.UnitTestCaseAction;
-import besouro.model.UnitTestSessionAction;
+import besouro.model.action.TestFailureAction;
+import besouro.model.action.TestSuccessfullAction;
+import besouro.model.action.UnitTestAction;
 import besouro.stream.ActionOutputStream;
 
 
@@ -35,95 +35,61 @@ public class JUnitListener extends TestRunListener {
 
 	@Override
 	public void sessionFinished(ITestRunSession session) {
-		
 		boolean isSuccessfull = true;
 		for (UnitTestAction action: getTestFileActions(session, session.getLaunchedProject())) {
-			stream.addAction(action);
+			//TODO stream.addAction(action);
 			isSuccessfull &= action.isSuccessful();
 		}
 		
 		IResource res = findTestResource(session.getLaunchedProject(), session.getTestRunName());
-
-		String name = res!=null?res.getName():session.getTestRunName();
+		String name = res != null ? res.getName() : session.getTestRunName();
 		
-		// registers the session action. It brakes the episode, but doesnt count on the classification
-		UnitTestSessionAction action = new UnitTestSessionAction(new Date(), name);
-		action.setSuccessValue(isSuccessfull);
+		//TODO UnitTestSessionAction action = new UnitTestSessionAction(new Date(), name);
+		UnitTestAction action;
+		if (isSuccessfull) {
+			action = new TestSuccessfullAction(new Date(), name + ".java");
+		} else {
+			action = new TestFailureAction(new Date(), name + ".java");
+		}
 		stream.addAction(action);
-		
 	}
 
-	private Collection<UnitTestCaseAction> getTestFileActions(ITestElement session, IJavaProject project) {
-		
-		List<UnitTestCaseAction> list = new ArrayList<UnitTestCaseAction>();
+	private Collection<UnitTestAction> getTestFileActions(ITestElement session, IJavaProject project) {
+		List<UnitTestAction> list = new ArrayList<UnitTestAction>();
 		
 		if (session instanceof ITestSuiteElement) {
-			
 			ITestSuiteElement testCase = (ITestSuiteElement) session;
-
 			IResource res = findTestResource(project, testCase.getSuiteTypeName());
-			
-			UnitTestCaseAction action = new UnitTestCaseAction(new Date(), res.getName());
+			UnitTestAction action = new UnitTestAction(new Date(), res.getName());
 			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
 			list.add(action);
-			
 		} else if (session instanceof ITestCaseElement) {
-			
 			ITestCaseElement testCase = (ITestCaseElement) session;
-			
 			IResource res = findTestResource(project, testCase.getTestClassName());
-				
-			// will reach this case only when user executes a single test method
-			
-			UnitTestCaseAction action = new UnitTestCaseAction(new Date(),res.getName());
+			UnitTestAction action = new UnitTestAction(new Date(),res.getName());
 			action.setSuccessValue(testCase.getTestResult(true).equals(Result.OK));
 			list.add(action);
-						
 		} else if (session instanceof ITestElementContainer) {
 			ITestElementContainer container = (ITestElementContainer) session; 
 			for(ITestElement child: container.getChildren()){
 				list.addAll(getTestFileActions(child, project));
 			}
 		}
-		
-		
 		return list;
-		
 	}
 
 	private IResource findTestResource(IJavaProject project, String className) {
 		IPath path = new Path(className.replaceAll("\\.", "/") + ".java");
 		try {
-			
 			IJavaElement element = project.findElement(path);
-			if (element != null)
+			if (element != null) {
 				return element.getResource();
-			else 
+			} else { 
 				return null;
-			
+			}
 		} catch (JavaModelException e) {
 			throw new RuntimeException(e);
 		}
 	}
-
-
-//	 private void print(ITestElement session) {
-//		
-//		
-//		 if (session instanceof ITestSuiteElement) {
-//			 
-//			 ITestSuiteElement suite = (ITestSuiteElement) session;
-//			 
-//		 } else if (session instanceof ITestElementContainer) {
-//			 
-//			 ITestElementContainer suite = (ITestElementContainer) session;
-//			
-//			 for (ITestElement test : suite.getChildren()) {
-//				 print(test);
-//			 }
-//			
-//		 }
-//		 
-//	 }
 
 }
