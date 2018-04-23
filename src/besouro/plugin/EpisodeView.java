@@ -4,16 +4,11 @@ import java.io.File;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.internal.core.JavaElement;
-import org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -27,15 +22,14 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-import besouro.model.Action;
 import besouro.model.Episode;
+import besouro.model.action.Action;
 import besouro.stream.EpisodeListener;
 
-//TODO   separate classes in files
+//TODO Separate classes in files
 public class EpisodeView extends ViewPart implements EpisodeListener {
 
 	public static final String ID = "besouro.view.EpisodeView";
@@ -49,6 +43,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 	private TreeViewer viewer;
 
 	public static EpisodeView sharedInstance;
+	
 	public static EpisodeView getInstance() {
 		return sharedInstance;
 	}
@@ -72,13 +67,11 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 			}
 			viewer.setInput(null);
 			
-			stopAction.setEnabled(false);
+			setEnabled(false);
 			startAction.setEnabled(true);
 			
-			statusLabel.setText("stopped");
+			statusLabel.setText("Stopped");
 			statusLabel.getParent().layout();
-
-			
 		}
 	}
 
@@ -90,37 +83,29 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		}
 		
 		public void run() {
-			
 			File projectRootDir = null;
 			String projectName = null;
 			
-			IEditorPart editorPart = getSite().getWorkbenchWindow().getActivePage().getActiveEditor();
+			/**ISelectionService service = getSite().getWorkbenchWindow().getSelectionService();
+			IStructuredSelection structured = (IStructuredSelection) service
+		            .getSelection("org.eclipse.jdt.ui.PackageExplorer");
+			JavaProject file2 = (JavaProject) structured.getFirstElement();
+			IPath path = file2.getPath();
+			projectRootDir = path.toFile();
+		    projectName = file2.getElementName();*/
 			
-			// try to get the project of the current editor, if it exists
+			IEditorPart editorPart = getSite().getWorkbenchWindow().getActivePage().getActiveEditor();
 			if(editorPart  != null) {
 			    IFileEditorInput input = (IFileEditorInput)editorPart.getEditorInput();
 			    IFile file = input.getFile();
 			    IProject activeProject = file.getProject();
 			    projectRootDir = activeProject.getLocation().toFile();
 			    projectName = activeProject.getName();
-			    
- 
-		    // else try to get it from the selected resource on package explorer
-			} else {
-				IViewPart part = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().findView("org.eclipse.jdt.ui.PackageExplorer");
-				PackageExplorerPart explorer = (PackageExplorerPart) part;
-				
-				StructuredSelection sel = (StructuredSelection)explorer.getTreeViewer().getSelection();
-				
-				if (!sel.isEmpty()) {
-					JavaElement resource = (JavaElement)sel.getFirstElement();
-					IJavaProject activeProject= resource.getJavaProject();
-					projectRootDir = activeProject.getResource().getLocation().toFile();
-					projectName = activeProject.getProject().getName();
-				}
-				
 			}
 			
+			System.out.println("ProjectRootDir: " + projectRootDir);
+			System.out.println("ProjectRootName: " + projectName);
+
 			if (projectRootDir != null) {
 				
 				currentSession = ProgrammingSession.newSession(projectRootDir);
@@ -132,21 +117,14 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				currentSession.start();
 				
 				stopAction.setEnabled(true);
-				startAction.setEnabled(false);
+				setEnabled(false);
 				
-				statusLabel.setText("recording " + projectName);
+				statusLabel.setText("Recording " + projectName);
 				statusLabel.getParent().layout();
-				
-				
 			} else {
-				
 				MessageDialog.openInformation(viewer.getControl().getShell(),
 						"Warning", "Please, select a project or a resource in package explorer");
-
 			}
-			
-			
-			
 		}
 	}
 
@@ -199,25 +177,18 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		}
 		
 		public Image getImage(Object obj) {
-			
-			ImageDescriptor descriptor = null;
-			
 			if (obj instanceof Episode) {
 			
 				Episode episode = (Episode)obj;
 				
 				String imgFileName = "icons/";
 				
-				if (episode.isTDD()==null) {
-					// unclassified
+				if (episode.isTDD() == null) {
 					imgFileName += "episode";
-					
 				} else if (episode.isTDD()) {
 					imgFileName += "episode_conformant";
-					
-				} else { // classified as non-conformant
+				} else {
 					imgFileName += "episode_nonconformant";
-					
 				}
 				
 				if (episode.isDisagree()) {
@@ -226,24 +197,14 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				
 				imgFileName += ".png";
 				
-				descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", imgFileName);
-				
+				return Activator.imageDescriptorFromPlugin("besouro_plugin", imgFileName).createImage();
 			} else if (obj instanceof Action) {
-				descriptor = Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/action.gif");
-				
+				return Activator.imageDescriptorFromPlugin("besouro_plugin", "icons/action.gif").createImage();
 			} else if (obj instanceof String) {
 				return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_INFO_TSK);
-				
 			} else {
 				return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
-				
 			}
-
-		   //obtain the cached image corresponding to the descriptor
-		   Image image = descriptor.createImage();
-		   
-		   return image;
-
 		}
 	}
 	
@@ -264,7 +225,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		gridData.grabExcessHorizontalSpace = true;
 		
 		statusLabel = new Label(parent, SWT.NONE);
-		statusLabel.setText("stopped              ");
+		statusLabel.setText("Stopped");
 		statusLabel.setLayoutData(labelGridData);
 
 		viewer = new TreeViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -283,8 +244,6 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		
 		manager.add(startAction);
 		manager.add(stopAction);
-		
-		
 	}
 	
 	@Override
@@ -294,7 +253,6 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 	public void episodeRecognized(final Episode e) {
 		Display.getDefault().asyncExec(new Runnable() {
             public void run() {
-            	// refreshes the entire list
             	viewer.refresh();
             }
          });

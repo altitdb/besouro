@@ -18,12 +18,11 @@ public class Activator extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "test_plugin";
 
-	// The shared instance
 	private static Activator plugin;
+	
 	public static Activator getDefault() {
 		return plugin;
 	}
-	
 
 	public Activator() {
 	}

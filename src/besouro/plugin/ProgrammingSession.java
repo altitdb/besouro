@@ -2,16 +2,11 @@ package besouro.plugin;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import besouro.classification.besouro.BesouroEpisodeClassifierStream;
-import besouro.classification.randomHeuristic.RandomHeuristicTDDConformance;
-import besouro.classification.zorro.ZorroEpisodeClassifierStream;
-import besouro.listeners.BesouroListenerSet;
-import besouro.model.Action;
+import besouro.classifier.EpisodeClassifierStream;
 import besouro.model.Episode;
+import besouro.model.action.Action;
 import besouro.persistence.ActionFileStorage;
 import besouro.persistence.EpisodeFileStorage;
 import besouro.persistence.GitRecorder;
@@ -21,30 +16,17 @@ import besouro.stream.EpisodeListener;
 public class ProgrammingSession implements ActionOutputStream {
 
 	private BesouroListenerSet eclipseListenerSet;
-	
-	private ZorroEpisodeClassifierStream zorroClassifier;
-	private ZorroEpisodeClassifierStream randomHeuristicClassifier;
-	private BesouroEpisodeClassifierStream besouroClassifier;
-	
 	private ActionFileStorage actionStorage;
-	private EpisodeFileStorage zorroEpisodesStorage;
-	private EpisodeFileStorage randomHeuristicEpisodesStorage;
 	private EpisodeFileStorage disagreementsStorage;
-	private EpisodeFileStorage besouroEpisodesStorage;
-	
 	private EpisodeFileStorage userCommentsEpisodesStorage;
-	
+	private EpisodeFileStorage episodeClassfierStorage;
 	private File actionsFile;
-	private File zorroEpisodesFile;
-	private File randomHeuristicEpisodesFile;
+	private File episodeClassfierFile;
 	private File disagreementsFile;
-	private File besouroEpisodeFile;
 	private File userCommentsFile;
-
 	private GitRecorder git;
-
-	
 	private static ProgrammingSession currentSession;
+	private EpisodeClassifierStream episodeClassifierStream;
 
 	public static ProgrammingSession newSession(File basedir) {
 		return newSession(basedir, BesouroListenerSet.getSingleton());
@@ -58,9 +40,7 @@ public class ProgrammingSession implements ActionOutputStream {
 		return currentSession;
 	}
 	
-
 	private ProgrammingSession(File basedir, BesouroListenerSet listeners) {
-		
 		String timestamp = new SimpleDateFormat("yyyyMMddHHmmssS").format(new Date());
 		
 		File besouroDir = new File(basedir, ".besouro");
@@ -72,16 +52,10 @@ public class ProgrammingSession implements ActionOutputStream {
 		actionsFile = new File(sessionDir, "actions.txt");
 		actionStorage = new ActionFileStorage(actionsFile);
 		
-		zorroEpisodesFile = new File(sessionDir, "zorroEpisodes.txt");
-		zorroEpisodesStorage = new EpisodeFileStorage(zorroEpisodesFile);
-		zorroClassifier = new ZorroEpisodeClassifierStream();
-		zorroClassifier.addEpisodeListener(zorroEpisodesStorage);
-		
-		randomHeuristicEpisodesFile = new File(sessionDir, "randomHeuristicEpisodes.txt");
-		randomHeuristicEpisodesStorage = new EpisodeFileStorage(randomHeuristicEpisodesFile);
-		randomHeuristicClassifier = new ZorroEpisodeClassifierStream();
-		randomHeuristicClassifier.setConformanceCriterion(new RandomHeuristicTDDConformance());
-		randomHeuristicClassifier.addEpisodeListener(randomHeuristicEpisodesStorage);
+		episodeClassfierFile = new File(sessionDir, "episodeClassfierFile.txt");
+		episodeClassfierStorage = new EpisodeFileStorage(episodeClassfierFile);
+		episodeClassifierStream = new EpisodeClassifierStream();
+		episodeClassifierStream.addEpisodeListener(episodeClassfierStorage);
 		
 		disagreementsFile = new File(sessionDir, "disagreements.txt");
 		disagreementsStorage = new EpisodeFileStorage(disagreementsFile);
@@ -89,16 +63,10 @@ public class ProgrammingSession implements ActionOutputStream {
 		userCommentsFile = new File(sessionDir, "userComments.txt");
 		userCommentsEpisodesStorage = new EpisodeFileStorage(userCommentsFile);
 		
-		besouroEpisodeFile = new File(sessionDir, "besouroEpisodes.txt");
-		besouroEpisodesStorage = new EpisodeFileStorage(besouroEpisodeFile);
-		besouroClassifier = new BesouroEpisodeClassifierStream();
-		besouroClassifier.addEpisodeListener(besouroEpisodesStorage);
-		
 		eclipseListenerSet = listeners;
 		eclipseListenerSet.setOutputStream(this);
 		
 		git = new GitRecorder(basedir);
-		
 	}
 	
 	public void start() {
@@ -106,40 +74,35 @@ public class ProgrammingSession implements ActionOutputStream {
 		git.createRepoIfNeeded();
 	}
 
-
 	public void addAction(Action action) {
+		System.out.println(action);
 		actionStorage.addAction(action);
-		zorroClassifier.addAction(action);
-		randomHeuristicClassifier.addAction(action);
-		besouroClassifier.addAction(action);
+		episodeClassifierStream.addAction(action);
 		git.addAction(action);
 	}
 
-	/**
-	 * Used by EpisodeView to allow the user to disagree from a n Episode classification
-	 * @param episode
-	 */
 	public void disagreeFromEpisode(Episode episode) {
 		disagreementsStorage.episodeRecognized(episode);
 	}
 
-	/**
-	 * Used by EpisodeView to allow the user to make comments on episodes
-	 * @param episode
-	 */
 	public void commentEpisode(Episode episode) {
 		userCommentsEpisodesStorage.episodeRecognized(episode);
 	}
 	
-
 	public void addEpisodeListeners(EpisodeListener episodeListener) {
-		// its the classification that will show in the interface
-		randomHeuristicClassifier.addEpisodeListener(episodeListener);
+		episodeClassifierStream.addEpisodeListener(episodeListener);
 	}
 
 	public Episode[] getEpisodes() {
-		// its the classification that will show in the interface
-		return randomHeuristicClassifier.getEpisodes();
+		return episodeClassifierStream.getEpisodes();
+		
+		/**Episode episode = new Episode();
+		episode.setClassification("test-first", "abc");
+		episode.setDuration(1000);
+		List<Action> actions = new ArrayList<Action>();
+		actions.add(new TestCreationAction(new Date(), null));
+		episode.addActions(actions);
+		return new Episode[] { episode };*/
 	}
 	
 	public void close() {
@@ -151,28 +114,12 @@ public class ProgrammingSession implements ActionOutputStream {
 		return actionsFile;
 	}
 
-	public File getZorroEpisodesFile() {
-		return zorroEpisodesFile;
-	}
-
-	public File getRandomheuristicEpisodesFile() {
-		return randomHeuristicEpisodesFile;
-	}
-	
-	public File getBesouroEpisodesFile() {
-		return besouroEpisodeFile;
-	}
-
-	
 	public File getDisagreementsFile() {
 		return disagreementsFile;
 	}
-
 	
-	/** for testing purposes only */
 	public void setGitRecorder(GitRecorder git) {
 		this.git = git;
-		
 	}
 
 }

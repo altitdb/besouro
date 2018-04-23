@@ -1,23 +1,23 @@
-package besouro.listeners;
+package besouro.plugin;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.junit.JUnitCore;
 
-import besouro.plugin.Activator;
-import besouro.model.Action;
+import besouro.listeners.JUnitListener;
+import besouro.listeners.JavaStructureChangeListener;
+import besouro.listeners.ResourceChangeListener;
+import besouro.listeners.WindowListener;
+import besouro.model.action.Action;
 import besouro.stream.ActionOutputStream;
 
 public class BesouroListenerSet implements ActionOutputStream {
 
-	private static BesouroListenerSet singleton;
+	private static final BesouroListenerSet BESOURO_LISTENER = new BesouroListenerSet();
 	
 	public static BesouroListenerSet getSingleton() {
-		if (singleton==null) {
-			singleton = new BesouroListenerSet();
-		}
-		return singleton;
+		return BESOURO_LISTENER;
 	}
 
 	private WindowListener windowListener;
@@ -42,10 +42,7 @@ public class BesouroListenerSet implements ActionOutputStream {
 		JavaCore.addElementChangedListener(javaListener);
 		JUnitCore.addTestRunListener(junitListener);
 		Activator.getDefault().getWorkbench().addWindowListener(windowListener);
-		
-		// registers open events for the already opened files
 		windowListener.windowOpened(null);
-
 	}
 	
 	public void unregisterListenersInEclipse() {
@@ -54,17 +51,15 @@ public class BesouroListenerSet implements ActionOutputStream {
 		JUnitCore.removeTestRunListener(junitListener);
 		Activator.getDefault().getWorkbench().removeWindowListener(windowListener);
 	}
-
 	
 	public void setOutputStream(ActionOutputStream actionOutputStream) {
 		this.output = actionOutputStream;
 	}
 
 	public void addAction(Action action) {
-		if (output!=null) {
+		if (output != null) {
 			output.addAction(action);
 		}
-		
 	}
 	
 }

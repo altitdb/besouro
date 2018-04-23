@@ -101,7 +101,6 @@ public class DisagreementPopupMenu {
 		nonConformAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setIsTDD(false);
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
@@ -113,7 +112,6 @@ public class DisagreementPopupMenu {
 		conformAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setIsTDD(true);
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
@@ -134,7 +132,7 @@ public class DisagreementPopupMenu {
 		testFirstAction  = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("test-first", null);
+				e.setClassification("test-first");
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
@@ -145,7 +143,7 @@ public class DisagreementPopupMenu {
 		testLastAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("test-last", null);
+				e.setClassification("test-last");
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
@@ -156,7 +154,7 @@ public class DisagreementPopupMenu {
 		testAdditionAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("test-addition", null);
+				e.setClassification("test-addition");
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
@@ -168,7 +166,7 @@ public class DisagreementPopupMenu {
 		refactoringAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("refactoring", null);
+				e.setClassification("refactoring");
 				session.disagreeFromEpisode(e);
 				e.setDisagree(true);
 				viewer.refresh();
@@ -180,7 +178,7 @@ public class DisagreementPopupMenu {
 		productionAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("production", null);
+				e.setClassification("production");
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
@@ -192,7 +190,7 @@ public class DisagreementPopupMenu {
 		regressionAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("regression", null);
+				e.setClassification("regression");
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
@@ -204,7 +202,7 @@ public class DisagreementPopupMenu {
 		dontknowAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("dont-know", null);
+				e.setClassification("dont-know");
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
@@ -218,13 +216,13 @@ public class DisagreementPopupMenu {
 				
 				InputDialog dialog = new InputDialog(viewer.getControl().getShell(),"Comment", "Please enter your comment","",null);
 				
-				if( dialog.open() == IStatus.OK){ 
+				if(dialog.open() == IStatus.OK){ 
 					
 					String comment = dialog.getValue(); 
 					
 					Episode e = new Episode();
 					e.setTimestamp(getSelectedEpisode().getTimestamp());
-					e.setClassification("comment", comment);
+					e.setClassification(comment);
 					e.setDisagree(true);
 					session.commentEpisode(e);
 					
