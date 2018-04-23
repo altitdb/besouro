@@ -20,8 +20,6 @@ import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-import besouro.model.JavaFileAction;
-
 /**
  * Implements a meter to measure several aspects such as number of methods,
  * statements, test methods, assertion statements if applicable. Number of test
@@ -41,16 +39,6 @@ public class JavaStatementMeter extends ASTVisitor {
 	private int numOfTestMethods = 0;
 	private int numOfTestAssertions = 0;
 
-
-	public void reset() {
-		name = null;
-		numOfMethods = 0;
-		numOfStatements = 0;
-		numOfTestMethods = 0;
-		numOfTestAssertions = 0;
-
-	}
-
 	public boolean visit(PackageDeclaration node) {
 		this.packageName = node.getName().getFullyQualifiedName();
 		return true;
@@ -60,18 +48,15 @@ public class JavaStatementMeter extends ASTVisitor {
 		if (td.getName() != null) {
 			this.name = td.getName().getIdentifier();
 		}
-
 		return true;
 	}
 
 	private boolean isJUnit4Test(MethodDeclaration md) {
-		List modifiers = md.modifiers();
-		for (Iterator i = modifiers.iterator(); i.hasNext();) {
-			IExtendedModifier modifer = (IExtendedModifier) i.next();
+		for (Object i : md.modifiers()) {
+			IExtendedModifier modifer = (IExtendedModifier) i;
 			if (modifer.isAnnotation()) {
 				Annotation annotation = (Annotation) modifer;
-				if ("Test".equals(annotation.getTypeName()
-						.getFullyQualifiedName())) {
+				if ("Test".equals(annotation.getTypeName().getFullyQualifiedName())) {
 					return true;
 				}
 			}
@@ -90,15 +75,12 @@ public class JavaStatementMeter extends ASTVisitor {
 				this.numOfTestMethods++;
 			}
 
-			// Check test method body to look for assertion statement.
 			Block methodBody = md.getBody();
 			if (methodBody != null && methodBody.statements() != null) {
-				List stmts = methodBody.statements();
+				List<?> stmts = methodBody.statements();
 				this.numOfStatements += stmts.size();
-				// Looks through all statements in this method body.
-				for (Iterator i = stmts.iterator(); i.hasNext();) {
-					Statement stmt = (Statement) i.next(); // NOPMD
-					// MethodInvocation is one kind of expression statement.
+				for (Iterator<?> i = stmts.iterator(); i.hasNext();) {
+					Statement stmt = (Statement) i.next();
 					if (stmt instanceof ExpressionStatement) {
 						ExpressionStatement estmt = (ExpressionStatement) stmt;
 						checkAssertions(estmt);
@@ -107,14 +89,12 @@ public class JavaStatementMeter extends ASTVisitor {
 			}
 		}
 
-		// No need to visit child nodes anymore.
 		return false;
 	}
 
 	private void checkAssertions(ExpressionStatement estmt) {
 		if (estmt.getExpression() instanceof MethodInvocation) {
 			MethodInvocation mi = (MethodInvocation) estmt.getExpression();
-			// Increment number of test assertions.
 			if (mi.getName() != null
 					&& mi.getName().getIdentifier().startsWith("assert")) {
 				this.numOfTestAssertions++;
@@ -141,34 +121,41 @@ public class JavaStatementMeter extends ASTVisitor {
 	public boolean hasTest() {
 		return this.numOfTestMethods > 0 || this.numOfTestAssertions > 0;
 	}
+	
+	public boolean hasTestInClassName() {
+		return this.packageName!=null && this.packageName.toLowerCase().indexOf("test") >= 0;
+	}
+	
+	public boolean hasTestInPackageName() {
+		return this.name.toLowerCase().indexOf("test") >= 0;
+	}
 
 	public boolean isTest() {
-		// minimizes the problem of the case of the first class' test method creation
-		// (looking for 'test' in the class or package name
-		boolean hasTestInPackageName = this.packageName!=null && this.packageName.toLowerCase().indexOf("test") >= 0;
-		boolean hasTestInClassName = this.name.toLowerCase().indexOf("test") >= 0;
-		return hasTest() || hasTestInClassName || hasTestInPackageName;
+		return hasTest() || hasTestInClassName() || hasTestInPackageName();
 	}
 	
 	public String toString() {
 		StringBuffer buf = new StringBuffer(200);
-		buf.append("*****  ").append(this.name)
-				.append("   *****\nMethods     : ").append(this.numOfMethods)
-				.append("\nStatements  : ").append(this.numOfStatements);
+		buf.append("*****  ");
+		buf.append(this.name);
+		buf.append("   *****\nMethods     : ");
+		buf.append(this.numOfMethods);
+		buf.append("\nStatements  : ");
+		buf.append(this.numOfStatements);
 
-		// Appends test info if there is any.
 		if (this.hasTest()) {
-			buf.append("\nTests       : ").append(this.numOfTestMethods);
-			buf.append("\nAssertions  : ").append(this.numOfTestAssertions);
+			buf.append("\nTests       : ");
+			buf.append(this.numOfTestMethods);
+			buf.append("\nAssertions  : ");
+			buf.append(this.numOfTestAssertions);
 		}
 
 		return buf.toString();
 	}
 
 	public JavaStatementMeter measureJavaFile(IFile file) {
-		// Compute number of tests and assertions to this file.
-
 		ICompilationUnit cu = (ICompilationUnit) JavaCore.create(file);
+		@SuppressWarnings("deprecation")
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setSource(cu);
 		parser.setResolveBindings(true);

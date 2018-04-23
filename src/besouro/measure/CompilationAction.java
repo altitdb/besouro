@@ -1,10 +1,10 @@
-package besouro.model;
+package besouro.measure;
 
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.eclipse.core.resources.IResource;
+import besouro.model.action.ResourceAction;
 
 /**
  * Implements compilation error action.

@@ -11,7 +11,6 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaModelMarker;
 
-import besouro.model.CompilationAction;
 import besouro.stream.ActionOutputStream;
 
 
@@ -22,18 +21,13 @@ import besouro.stream.ActionOutputStream;
  */
 public class BuildErrorSensor {
 
-	private ActionOutputStream sensor;
+	//TODO private ActionOutputStream sensor;
 
 	public BuildErrorSensor(ActionOutputStream sensor) {
-		this.sensor = sensor;
+		//this.sensor = sensor;
 	}
 
 	public void findBuildProblem(IResourceDelta delta) {
-
-		// we are registering build errors in any file.
-		// not only in the changed file, as it was in the original version
-		// from Hongbing. Aparently, rules are gonna manage it.
-
 		IResource resource = delta.getResource();
 		if (resource == null) {
 			return;
@@ -49,7 +43,6 @@ public class BuildErrorSensor {
 			return;
 		}
 
-		// Message pool is used to filter out the repeated compilation error.
 		HashSet<String> messagePool = new HashSet<String>();
 		for (int i = 0; i < markerDeltas.length; i++) {
 
@@ -59,17 +52,13 @@ public class BuildErrorSensor {
 			if (!keyValueMap.isEmpty()) {
 
 				String errorMsg = keyValueMap.get("Error");
-				// String data = file.getLocation().toString() + "#" + errorMsg;
 				String data = location.toString() + "#" + errorMsg;
 
-				// dont repeat
 				if (!messagePool.contains(data)) {
-
 					CompilationAction action = new CompilationAction(new Date(), resource.getName());
 					action.setErrorMessage(errorMsg);
-					this.sensor.addAction(action);
+					//TODO this.sensor.addAction(action);
 					messagePool.add(data);
-
 				}
 			}
 		}

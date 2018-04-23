@@ -8,8 +8,6 @@ import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
-import besouro.stream.ActionOutputStream;
-
 
 public class Utils {
 
