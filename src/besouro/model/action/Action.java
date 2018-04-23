@@ -40,6 +40,30 @@ public abstract class Action implements Comparable<Action> {
 		list.add(new SimpleDateFormat("HH:mm:ss").format(clock));
 		return list;
 	}
+	
+	public Boolean isProductionCodingAction() {
+		return "ProductionCodingAction".equals(getClass().getSimpleName());
+	}
+	
+	public Boolean isTestCodingAction() {
+		return "TestCodingAction".equals(getClass().getSimpleName());
+	}
+	
+	public Boolean isTestCreationAction() {
+		return "TestCreationAction".equals(getClass().getSimpleName());
+	}
+	
+	public Boolean isTestFailureAction() {
+		return "TestFailureAction".equals(getClass().getSimpleName());
+	}
+	
+	public Boolean isTestSuccessfullAction() {
+		return "TestSuccessfullAction".equals(getClass().getSimpleName());
+	}
+	
+	public Boolean isEditAction() {
+		return "EditAction".equals(getClass().getSimpleName());
+	}
 
 	public static Action fromString(String line) {
 		Action action = null;
@@ -64,7 +88,6 @@ public abstract class Action implements Comparable<Action> {
 			
 		} else if (className.equals("CompilationAction")) {
 			action = new CompilationAction(tok);
-			
 		}
 		
 		return action;

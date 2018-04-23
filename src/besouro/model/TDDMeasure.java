@@ -29,7 +29,6 @@ public class TDDMeasure {
 			if (episodes.get(i).isTDD()) {
 				numberOfTDDEpisodes += 1;
 				durationOfTDDEpisodes += episodes.get(i).getDuration();
-				
 			} else {
 				numberOfNonTDDEpisodes += 1;
 				durationOfNonTDDEpisodes += episodes.get(i).getDuration();
