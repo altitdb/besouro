@@ -52,7 +52,7 @@ public class ProgrammingSession implements ActionOutputStream {
 		actionsFile = new File(sessionDir, "actions.txt");
 		actionStorage = new ActionFileStorage(actionsFile);
 		
-		episodeClassfierFile = new File(sessionDir, "episodeClassfierFile.txt");
+		episodeClassfierFile = new File(sessionDir, "episodeClassifierFile.txt");
 		episodeClassfierStorage = new EpisodeFileStorage(episodeClassfierFile);
 		episodeClassifierStream = new EpisodeClassifierStream();
 		episodeClassifierStream.addEpisodeListener(episodeClassfierStorage);
@@ -95,14 +95,6 @@ public class ProgrammingSession implements ActionOutputStream {
 
 	public Episode[] getEpisodes() {
 		return episodeClassifierStream.getEpisodes();
-		
-		/**Episode episode = new Episode();
-		episode.setClassification("test-first", "abc");
-		episode.setDuration(1000);
-		List<Action> actions = new ArrayList<Action>();
-		actions.add(new TestCreationAction(new Date(), null));
-		episode.addActions(actions);
-		return new Episode[] { episode };*/
 	}
 	
 	public void close() {
