@@ -15,13 +15,14 @@ import besouro.stream.EpisodeListener;
 
 public class EpisodeFileStorage implements EpisodeListener {
 
+	private File file;
 	private FileWriter writer;
 	private TreeMap<Long, Episode> episodes = new TreeMap<Long, Episode>();
 
 	public EpisodeFileStorage(File file) {
+		this.file = file;
 		try {
 			file.createNewFile();
-			this.writer = new FileWriter(file);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -37,20 +38,20 @@ public class EpisodeFileStorage implements EpisodeListener {
 			for (Episode ep: episodes.values()) {
 				saveEpisodeToFile(ep);
 			}
-			writer.close();
 		} catch (IOException e1) {
 			throw new RuntimeException(e1);
 		}
 	}
 
 	private void saveEpisodeToFile(Episode e) throws IOException {
+		this.writer = new FileWriter(this.file);
 		writer.append("" + e.getTimestamp());
 		writer.append(" " + e.getCategory());
-		writer.append(" " + e.getSubtype());
 		writer.append(" " + e.getDuration());
 		writer.append(" " + e.isTDD());
 		writer.append("\n");
 		writer.flush();
+		writer.close();
 	}
 	
 	public static Episode[] loadEpisodes(File file) {
@@ -65,7 +66,7 @@ public class EpisodeFileStorage implements EpisodeListener {
 				StringTokenizer tok = new StringTokenizer(line, " ");
 				Episode e = new Episode();
 				e.setTimestamp(Long.parseLong(tok.nextToken()));
-				e.setClassification(tok.nextToken(), tok.nextToken());
+				e.setClassification(tok.nextToken());
 				e.setDuration(Integer.parseInt(tok.nextToken()));
 				list.add(e);
 				line = reader.readLine();

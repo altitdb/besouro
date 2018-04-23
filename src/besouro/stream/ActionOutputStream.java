@@ -1,6 +1,6 @@
 package besouro.stream;
 
-import besouro.model.Action;
+import besouro.model.action.Action;
 
 public interface ActionOutputStream {
 

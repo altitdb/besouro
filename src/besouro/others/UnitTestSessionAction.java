@@ -1,7 +1,9 @@
-package besouro.model;
+package besouro.others;
 
 import java.util.Date;
 import java.util.StringTokenizer;
+
+import besouro.model.action.UnitTestAction;
 
 public class UnitTestSessionAction extends UnitTestAction {
 

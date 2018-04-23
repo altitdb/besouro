@@ -3,7 +3,7 @@ package besouro.stream;
 import java.util.HashMap;
 import java.util.Map;
 
-import besouro.model.JavaFileAction;
+import besouro.model.action.JavaFileAction;
 
 public class JavaActionsLinker {
 
@@ -11,10 +11,8 @@ public class JavaActionsLinker {
 	
 	public void linkActions(JavaFileAction linkedAction) {
 		String path = linkedAction.getResource();
-		linkedAction.setPreviousAction(previousEditActionPerFile.get(path)); // 1st time will be null, I know...
+		linkedAction.setPreviousAction(previousEditActionPerFile.get(path));
 		previousEditActionPerFile.put(path, linkedAction);
-		
 	}
-
 	
 }
