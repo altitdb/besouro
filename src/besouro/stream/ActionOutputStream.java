@@ -4,6 +4,6 @@ import besouro.model.action.Action;
 
 public interface ActionOutputStream {
 
-	public void addAction(Action action);
-
+	void addAction(Action action);
+	
 }

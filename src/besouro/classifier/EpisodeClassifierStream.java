@@ -24,6 +24,13 @@ public class EpisodeClassifierStream implements EpisodesRecognizerActionStream {
 		
 	}
 	
+	public Action getLastAction() {
+		if (actions.isEmpty()) {
+			return null;
+		}
+		return actions.get(actions.size() - 1);
+	}
+	
 	public void addAction(Action action) {
 		if (!action.isEditAction()) {
 			if (action instanceof JavaFileAction) {

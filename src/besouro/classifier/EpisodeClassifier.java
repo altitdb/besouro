@@ -10,8 +10,13 @@ public class EpisodeClassifier implements Classifier {
 	public Episode classify(List<Action> actions) {
 		System.out.println(actions);
 		
-		ProductionClassifier production = new ProductionClassifier();
-		Episode episode = production.classify(actions);
+		TestAdditionClassifier testAddition = new TestAdditionClassifier();
+		Episode episode = testAddition.classify(actions);
+				
+		if (episode == null) {
+			ProductionClassifier production = new ProductionClassifier();
+			episode = production.classify(actions);
+		}
 		
 		
 		return episode;

@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 
+import besouro.model.action.Action;
 import besouro.model.action.ProductionCodingAction;
 import besouro.model.action.TestAction;
 import besouro.model.action.TestCodingAction;
@@ -46,6 +47,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	protected static final String PROP_CURRENT_TEST_ASSERTIONS = "Current-Test-Assertions";
 
 	private ActionOutputStream stream;
+	private Action lastAction;
 
 	public JavaStructureChangeListener(ActionOutputStream stream) {
 		this.stream = stream;
@@ -114,7 +116,8 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 			if (name != null && !"".equals(name)) {
 				if (classFileName.toString().contains(TEST_PACKAGE)) {
 					TestAction action;
-					if (METHOD_TYPE.equals(type) && ADD_OPERATION.equals(operation)) {
+					boolean isAddMethod = METHOD_TYPE.equals(type) && ADD_OPERATION.equals(operation);
+					if (isAddMethod || (lastAction != null && lastAction.isTestCreationAction())) {
 						action = new TestCreationAction(new Date(), element.getResource().getName());
 					} else {
 						action = new TestCodingAction(new Date(), element.getResource().getName());
@@ -123,12 +126,14 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 					action.setSubjectType(type);
 					action.setSubjectName(name);
 					this.stream.addAction(action);
+					lastAction = action;
 				} else {
 					ProductionCodingAction action = new ProductionCodingAction(new Date(), element.getResource().getName());
 					action.setOperator(operation);
 					action.setSubjectType(type);
 					action.setSubjectName(name);
 					this.stream.addAction(action);
+					lastAction = action;
 				}
 			}
 		}
@@ -149,17 +154,24 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 			
 			if (fromName != null && toName != null && !fromName.equals(toName)) {
 				if (classFileName.toString().contains(TEST_PACKAGE)) {
-					TestCodingAction action = new TestCodingAction(new Date(), javaFile.getName());
+					TestAction action;
+					if (lastAction != null && lastAction.isTestCreationAction()) {
+						action = new TestCreationAction(new Date(), javaFile.getName());
+					} else {
+						action = new TestCodingAction(new Date(), javaFile.getName());
+					}
 					action.setOperator("RENAME");
 					action.setSubjectName(fromName + "=>" + toName);
 					action.setSubjectType(type);
 					this.stream.addAction(action);
+					lastAction = action;
 				} else {
 					ProductionCodingAction action = new ProductionCodingAction(new Date(), javaFile.getName());
 					action.setOperator("RENAME");
 					action.setSubjectName(fromName + "=>" + toName);
 					action.setSubjectType(type);
 					this.stream.addAction(action);
+					lastAction = action;
 				}
 			}
 		}
@@ -179,17 +191,24 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 			
 			if (fromName != null && toName != null && !fromName.equals(toName)) {
 				if (javaFile.toString().contains(TEST_PACKAGE)) {
-					TestCodingAction action = new TestCodingAction(new Date(), javaFile.getName());
+					TestAction action;
+					if (lastAction != null && lastAction.isTestCreationAction()) {
+						action = new TestCreationAction(new Date(), javaFile.getName());
+					} else {
+						action = new TestCodingAction(new Date(), javaFile.getName());
+					}
 					action.setOperator("MOVE");
 					action.setSubjectName(fromName + "=>" + toName);
 					action.setSubjectType(type);
 					this.stream.addAction(action);
+					lastAction = action;
 				} else {
 					ProductionCodingAction action = new ProductionCodingAction(new Date(), javaFile.getName());
 					action.setOperator("MOVE");
 					action.setSubjectName(fromName + "=>" + toName);
 					action.setSubjectType(type);
 					this.stream.addAction(action);
+					lastAction = action;
 				}
 			}
 		}
