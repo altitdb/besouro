@@ -1,9 +1,12 @@
 package besouro.classifier;
 
+import java.util.List;
+
 import besouro.model.Episode;
+import besouro.model.action.Action;
 
 public interface Classifier {
 
-	void classify(Episode episode);
+	Episode classify(List<Action> actions);
 	
 }

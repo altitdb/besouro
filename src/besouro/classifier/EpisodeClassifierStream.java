@@ -7,8 +7,6 @@ import besouro.model.Episode;
 import besouro.model.TDDMeasure;
 import besouro.model.action.Action;
 import besouro.model.action.JavaFileAction;
-import besouro.model.action.UnitTestAction;
-import besouro.others.UnitTestSessionAction;
 import besouro.stream.EpisodeListener;
 import besouro.stream.EpisodesRecognizerActionStream;
 import besouro.stream.JavaActionsLinker;
@@ -27,44 +25,31 @@ public class EpisodeClassifierStream implements EpisodesRecognizerActionStream {
 	}
 	
 	public void addAction(Action action) {
-		System.out.println("[action] " + action);
-		
-		if (action instanceof JavaFileAction) {
-			javaActionsLinker.linkActions((JavaFileAction) action);
-		}
-
-		actions.add(action);
-		
-		Episode episode = recognizeEpisode(action);
-
-		if (episode != null) {
-			episodeClassifier.classify(episode);
-			measure.addEpisode(episode);
-			episodes.add(episode);
-			
-			for (EpisodeListener lis: listeners) {
-				lis.episodeRecognized(episode);
+		if (!action.isEditAction()) {
+			if (action instanceof JavaFileAction) {
+				javaActionsLinker.linkActions((JavaFileAction) action);
 			}
 			
-			System.out.println(episode);
-			System.out.println("-----------------");
-			System.out.println("\t#episodes: " + measure.countEpisodes());
-			System.out.println("\t duration: " + measure.getTDDPercentageByDuration());
-			System.out.println("\t   number: " + measure.getTDDPercentageByNumber());
-			System.out.println("-----------------");
-		}
-	}
-
-	private Episode recognizeEpisode(Action action) {
-		if (action instanceof UnitTestSessionAction) {
-			if (((UnitTestAction) action).isSuccessful()) {
-				Episode episode = new Episode();
-				episode.addActions(actions);
+			actions.add(action);
+			Episode episode = episodeClassifier.classify(actions);
+			
+			if (episode != null) {
 				actions.clear();
-				return episode;
+				measure.addEpisode(episode);
+				episodes.add(episode);
+				
+				for (EpisodeListener episodeListener : listeners) {
+					episodeListener.episodeRecognized(episode);
+				}
+				
+				System.out.println(episode);
+				System.out.println("-----------------");
+				System.out.println("episodes: " + measure.countEpisodes());
+				System.out.println("duration: " + measure.getTDDPercentageByDuration());
+				System.out.println("  number: " + measure.getTDDPercentageByNumber());
+				System.out.println("-----------------");
 			}
 		}
-		return null;
 	}
 
 	public TDDMeasure getTDDMeasure() {
