@@ -14,6 +14,7 @@ public class ProductionClassifier implements Classifier {
 		for (Action action : actions) {
 			if (!action.isProductionCodingAction()) {
 				isProduction = false;
+				break;
 			}
 		}
 		
