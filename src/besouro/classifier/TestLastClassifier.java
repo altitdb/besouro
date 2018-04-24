@@ -30,14 +30,14 @@ public class TestLastClassifier extends AbstractClassifier implements Classifier
 			} 
 			
 			if (isTestLast) {
-				episode = createTestAdditionEpisode(slimming(paramActions));
+				episode = createEpisode(slimming(paramActions));
 			}
 		}
 
 		return episode;
 	}
 
-	private Episode createTestAdditionEpisode(List<Action> actions) {
+	private Episode createEpisode(List<Action> actions) {
 		Episode episode = new Episode();
 		episode.addActions(actions);
 		episode.setClassification(DevelopmentType.TEST_LAST);

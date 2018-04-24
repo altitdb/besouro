@@ -59,14 +59,14 @@ public class TestFirstClassifier extends AbstractClassifier implements Classifie
 			}
 			
 			if (isTestFirst) {
-				episode = createTestAdditionEpisode(slimming(paramActions));
+				episode = createEpisode(slimming(paramActions));
 			}
 		}
 
 		return episode;
 	}
 
-	private Episode createTestAdditionEpisode(List<Action> actions) {
+	private Episode createEpisode(List<Action> actions) {
 		Episode episode = new Episode();
 		episode.addActions(actions);
 		episode.setClassification(DevelopmentType.TEST_FIRST);

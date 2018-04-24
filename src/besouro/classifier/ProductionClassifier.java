@@ -13,11 +13,16 @@ public class ProductionClassifier extends AbstractClassifier implements Classifi
 
 		Episode episode = null;
 		if (actions.size() == 1 && actions.get(0).isProductionCodingAction()) {
-			episode = new Episode();
-			episode.addActions(actions);
-			episode.setClassification(DevelopmentType.PRODUCTION);
+			episode = createEpisode(paramActions);
 		}
 		
+		return episode;
+	}
+
+	private Episode createEpisode(List<Action> actions) {
+		Episode episode = new Episode();
+		episode.addActions(actions);
+		episode.setClassification(DevelopmentType.PRODUCTION);
 		return episode;
 	}
 

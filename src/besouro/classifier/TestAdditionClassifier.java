@@ -23,7 +23,7 @@ public class TestAdditionClassifier extends AbstractClassifier implements Classi
 					}
 				}
 				if (isTestAddition) {
-					episode = createTestAdditionEpisode(actions);
+					episode = createEpisode(actions);
 				}
 			}
 		}
@@ -31,7 +31,7 @@ public class TestAdditionClassifier extends AbstractClassifier implements Classi
 		return episode;
 	}
 
-	private Episode createTestAdditionEpisode(List<Action> actions) {
+	private Episode createEpisode(List<Action> actions) {
 		Episode episode = new Episode();
 		episode.addActions(actions);
 		episode.setClassification(DevelopmentType.TEST_ADDITION);

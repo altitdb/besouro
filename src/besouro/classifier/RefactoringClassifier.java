@@ -31,14 +31,14 @@ public class RefactoringClassifier extends AbstractClassifier implements Classif
 			}
 			
 			if (isRefactoring) {
-				episode = createTestAdditionEpisode(slimming(paramActions));
+				episode = createEpisode(slimming(paramActions));
 			}
 		}
 
 		return episode;
 	}
 
-	private Episode createTestAdditionEpisode(List<Action> actions) {
+	private Episode createEpisode(List<Action> actions) {
 		Episode episode = new Episode();
 		episode.addActions(actions);
 		episode.setClassification(DevelopmentType.REFACTORING);
