@@ -59,7 +59,7 @@ public class TestLastClassifierTest {
 	}
 	
 	@Test
-	public void shoudDoesntReturnTestFirstEpisode() {
+	public void shoudDoesntReturnTestLastEpisode() {
 		List<Action> actions = new ArrayList<Action>();
 		actions.add(new TestCreationAction(new Date(), null));
 		actions.add(new TestSuccessfullAction(new Date(), null));
