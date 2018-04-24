@@ -84,4 +84,29 @@ public abstract class Action implements Comparable<Action> {
 		return action;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((clock == null) ? 0 : clock.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Action other = (Action) obj;
+		if (clock == null) {
+			if (other.clock != null)
+				return false;
+		} else if (!clock.equals(other.clock))
+			return false;
+		return true;
+	}
+
 }
