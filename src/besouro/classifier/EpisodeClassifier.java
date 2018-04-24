@@ -12,7 +12,7 @@ public class EpisodeClassifier extends AbstractClassifier implements Classifier 
 		
 		List<Action> news = slimming(actions);
 		
-		System.out.println("ALL: " + news);
+		System.out.println("SLIMMING: " + news);
 		
 		Episode episode = null;
 		
