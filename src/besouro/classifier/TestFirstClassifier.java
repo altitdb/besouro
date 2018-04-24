@@ -13,7 +13,7 @@ public class TestFirstClassifier extends AbstractClassifier implements Classifie
 
 		Episode episode = null;
 		
-		if (actions.get(0).isTestCreationAction() && actions.get(actions.size() - 1).isTestSuccessfullAction()) {
+		if (actions.size() > 2 && actions.get(0).isTestCreationAction() && actions.get(actions.size() - 1).isTestSuccessfullAction()) {
 			actions.remove(0);
 			actions.remove(actions.size() - 1);
 			
