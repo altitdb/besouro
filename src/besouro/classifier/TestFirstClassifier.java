@@ -19,7 +19,7 @@ public class TestFirstClassifier extends AbstractClassifier implements Classifie
 			
 			boolean isTestFirst = true;
 			Action isTestOrProduction = actions.get(0);
-			if (!actions.isEmpty() && isTestOrProduction.isTestCodingAction()) {
+			if (isTestOrProduction.isTestCodingAction()) {
 				for (int i = 0; i < actions.size(); i++) {
 					if ((i % 2 == 1 && !actions.get(i).isTestFailureAction()) ||
 						(i % 2 == 0 && !actions.get(i).isTestCodingAction())) {
@@ -27,7 +27,7 @@ public class TestFirstClassifier extends AbstractClassifier implements Classifie
 						break;
 					}
 				}
-			} else if (!actions.isEmpty() && isTestOrProduction.isTestFailureAction()) {
+			} else if (isTestOrProduction.isTestFailureAction()) {
 				if (actions.size() % 2 == 0) {
 					for (int i = 0; i < actions.size(); i++) {
 						if ((i % 2 == 1 && !actions.get(i).isProductionCodingAction()) ||
