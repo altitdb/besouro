@@ -30,7 +30,7 @@ public class TestLastClassifier extends AbstractClassifier implements Classifier
 			} 
 			
 			if (isTestLast) {
-				episode = createEpisode(slimming(paramActions));
+				episode = createEpisode(paramActions);
 			}
 		}
 

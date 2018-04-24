@@ -31,7 +31,7 @@ public class RefactoringClassifier extends AbstractClassifier implements Classif
 			}
 			
 			if (isRefactoring) {
-				episode = createEpisode(slimming(paramActions));
+				episode = createEpisode(paramActions);
 			}
 		}
 

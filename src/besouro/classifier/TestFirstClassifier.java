@@ -59,7 +59,7 @@ public class TestFirstClassifier extends AbstractClassifier implements Classifie
 			}
 			
 			if (isTestFirst) {
-				episode = createEpisode(slimming(paramActions));
+				episode = createEpisode(paramActions);
 			}
 		}
 

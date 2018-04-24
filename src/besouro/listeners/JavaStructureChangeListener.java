@@ -89,7 +89,9 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 			}
 		} else if (!changes.isEmpty()){
 			for (IJavaElementDelta i : changes) {
-				processUnary(javaFile, CHANGE_OPERATION, i);
+				if (!i.toString().contains("{PRIMARY WORKING COPY}")) {
+					processUnary(javaFile, CHANGE_OPERATION, i);
+				}
 			}
 		}
 	}
