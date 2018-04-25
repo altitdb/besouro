@@ -21,5 +21,4 @@ Export-Package: besouro.listeners,
  besouro.plugin,
  besouro.stream
 Bundle-ClassPath: .,
- lib/org.eclipse.jgit-0.9.3.jar,
- lib/jess.jar
+ lib/org.eclipse.jgit-0.9.3.jar
