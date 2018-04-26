@@ -8,50 +8,44 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.TreeMap;
 
 import besouro.model.Episode;
 import besouro.stream.EpisodeListener;
 
 public class EpisodeFileStorage implements EpisodeListener {
 
-	private File file;
 	private FileWriter writer;
-	private TreeMap<Long, Episode> episodes = new TreeMap<Long, Episode>();
 
 	public EpisodeFileStorage(File file) {
-		this.file = file;
 		try {
-			file.createNewFile();
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			
+			writer = new FileWriter(file, true);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	public void episodeRecognized(Episode e) {
-		episodes.put(e.getTimestamp(), e);
-		save();
-	}
-	
-	public void save() {
 		try {
-			for (Episode ep: episodes.values()) {
-				saveEpisodeToFile(ep);
-			}
+			saveEpisodeToFile(e);
 		} catch (IOException e1) {
 			throw new RuntimeException(e1);
 		}
 	}
-
-	private void saveEpisodeToFile(Episode e) throws IOException {
-		this.writer = new FileWriter(this.file);
-		writer.append("" + e.getTimestamp());
-		writer.append(" " + e.getCategory());
-		writer.append(" " + e.getDuration());
-		writer.append(" " + e.isTdd());
+	
+	private void saveEpisodeToFile(Episode episode) throws IOException {
+		writer.append(String.valueOf(episode.getTimestamp()));
+		writer.append(String.valueOf(episode.getCategory()));
+		writer.append(String.valueOf(episode.getDuration()));
+		writer.append(String.valueOf(episode.isTdd()));
+		writer.append("\n");
+		writer.append("Actions");
+		writer.append(String.valueOf(episode.getActions()));
 		writer.append("\n");
 		writer.flush();
-		writer.close();
 	}
 	
 	public static Episode[] loadEpisodes(File file) {

@@ -37,14 +37,6 @@ public class ActionFileStorage implements ActionOutputStream {
 		}
 	}
 	
-	public void close() {
-		try {
-			writer.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
 	public static Action[] loadFromFile(File file) {
 		if (!file.exists()) {
 			return null;

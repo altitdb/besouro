@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Menu;
 
+import besouro.model.DevelopmentType;
 import besouro.model.Episode;
 
 public class DisagreementPopupMenu {
@@ -26,9 +27,7 @@ public class DisagreementPopupMenu {
 	private Action testLastAction;
 	private Action testAdditionAction;
 	private Action refactoringAction;
-	private Action productionAction;
-	private Action regressionAction;
-	private Action dontknowAction;
+	private Action unknownAction;
 	private Action spacingAction;
 	private Action commentAction;
 
@@ -57,31 +56,23 @@ public class DisagreementPopupMenu {
 					
 					mngr.add(spacingAction);
 					
-					if (!"test-first".equals(episode.getCategory())) {
+					if (!DevelopmentType.TEST_FIRST.equals(episode.getCategory())) {
 						mngr.add(testFirstAction);
 					}
 					
-					if (!"test-last".equals(episode.getCategory())) {
+					if (!DevelopmentType.TEST_LAST.equals(episode.getCategory())) {
 						mngr.add(testLastAction);
 					}
 					
-					if (!"test-addition".equals(episode.getCategory())) {
+					if (!DevelopmentType.TEST_ADDITION.equals(episode.getCategory())) {
 						mngr.add(testAdditionAction);
 					}
 					
-					if (!"refactoring".equals(episode.getCategory())) {
+					if (!DevelopmentType.REFACTORING.equals(episode.getCategory())) {
 						mngr.add(refactoringAction);
 					}
 					
-					if (!"production".equals(episode.getCategory())) {
-						mngr.add(productionAction);
-					}
-					
-					if (!"regression".equals(episode.getCategory())) {
-						mngr.add(regressionAction);
-					}
-					
-					mngr.add(dontknowAction);
+					mngr.add(unknownAction);
 					
 					mngr.add(spacingAction);
 					
@@ -132,84 +123,60 @@ public class DisagreementPopupMenu {
 		testFirstAction  = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("test-first");
+				e.setClassification(DevelopmentType.TEST_FIRST);
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
 			}
 		};
-		testFirstAction.setText("test-first");
+		testFirstAction.setText(DevelopmentType.TEST_FIRST);
 		
 		testLastAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("test-last");
+				e.setClassification(DevelopmentType.TEST_LAST);
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
 			}
 		};
-		testLastAction.setText("test-last");
+		testLastAction.setText(DevelopmentType.TEST_LAST);
 		
 		testAdditionAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("test-addition");
+				e.setClassification(DevelopmentType.TEST_ADDITION);
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
 
 			}
 		};
-		testAdditionAction.setText("test-addition");
+		testAdditionAction.setText(DevelopmentType.TEST_ADDITION);
 		
 		refactoringAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("refactoring");
+				e.setClassification(DevelopmentType.REFACTORING);
 				session.disagreeFromEpisode(e);
 				e.setDisagree(true);
 				viewer.refresh();
 
 			}
 		};
-		refactoringAction.setText("refactoring");
-		
-		productionAction = new Action(){
+		refactoringAction.setText(DevelopmentType.REFACTORING);
+			
+		unknownAction = new Action(){
 			public void run() {
 				Episode e = getSelectedEpisode();
-				e.setClassification("production");
-				e.setDisagree(true);
-				session.disagreeFromEpisode(e);
-				viewer.refresh();
-
-			}
-		};
-		productionAction.setText("production");
-
-		regressionAction = new Action(){
-			public void run() {
-				Episode e = getSelectedEpisode();
-				e.setClassification("regression");
-				e.setDisagree(true);
-				session.disagreeFromEpisode(e);
-				viewer.refresh();
-
-			}
-		};
-		regressionAction.setText("regression");
-		
-		dontknowAction = new Action(){
-			public void run() {
-				Episode e = getSelectedEpisode();
-				e.setClassification("dont-know");
+				e.setClassification(DevelopmentType.UNKNOWN);
 				e.setDisagree(true);
 				session.disagreeFromEpisode(e);
 				viewer.refresh();
 				
 			}
 		};
-		dontknowAction.setText("I don't know");
+		unknownAction.setText(DevelopmentType.UNKNOWN);
 		
 		commentAction = new Action(){
 			public void run() {

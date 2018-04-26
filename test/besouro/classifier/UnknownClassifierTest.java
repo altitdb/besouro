@@ -11,6 +11,7 @@ import besouro.model.DevelopmentType;
 import besouro.model.Episode;
 import besouro.model.action.Action;
 import besouro.model.action.ProductionCodingAction;
+import besouro.model.action.TestCreationAction;
 import besouro.model.action.TestFailureAction;
 import besouro.model.action.TestSuccessfullAction;
 
@@ -28,4 +29,14 @@ public class UnknownClassifierTest {
 		Assert.assertEquals(DevelopmentType.UNKNOWN, episode.getCategory());
 	}
 	
+	@Test
+	public void shoudReturnUnknownEpisodeWithSuccessAndError() {
+		List<Action> actions = new ArrayList<Action>();
+		actions.add(new TestCreationAction(new Date(), null));
+		actions.add(new TestFailureAction(new Date(), null));
+		actions.add(new TestCreationAction(new Date(), null));
+		actions.add(new TestSuccessfullAction(new Date(), null));
+		Episode episode = classifier.classify(actions);
+		Assert.assertEquals(DevelopmentType.UNKNOWN, episode.getCategory());
+	}
 }

@@ -52,7 +52,7 @@ public class ProgrammingSession implements ActionOutputStream {
 		actionsFile = new File(sessionDir, "actions.txt");
 		actionStorage = new ActionFileStorage(actionsFile);
 		
-		episodeClassfierFile = new File(sessionDir, "episodeClassifierFile.txt");
+		episodeClassfierFile = new File(sessionDir, "episodes.txt");
 		episodeClassfierStorage = new EpisodeFileStorage(episodeClassfierFile);
 		episodeClassifierStream = new EpisodeClassifierStream();
 		episodeClassifierStream.addEpisodeListener(episodeClassfierStorage);
@@ -60,7 +60,7 @@ public class ProgrammingSession implements ActionOutputStream {
 		disagreementsFile = new File(sessionDir, "disagreements.txt");
 		disagreementsStorage = new EpisodeFileStorage(disagreementsFile);
 		
-		userCommentsFile = new File(sessionDir, "userComments.txt");
+		userCommentsFile = new File(sessionDir, "comments.txt");
 		userCommentsEpisodesStorage = new EpisodeFileStorage(userCommentsFile);
 		
 		eclipseListenerSet = listeners;

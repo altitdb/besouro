@@ -7,7 +7,6 @@ public interface DevelopmentType {
 	static final String TEST_DRIVEN_DEVELOPMENT = "Test Driven Development";
 	static final String TEST_ADDITION = "Test Addition";
 	static final String REFACTORING = "Refactoring";
-	static final String PRODUCTION = "Production";
 	static final String UNKNOWN = "Unknown";
 	
 }
