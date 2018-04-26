@@ -8,11 +8,7 @@ import besouro.model.action.Action;
 public class EpisodeClassifier extends AbstractClassifier implements Classifier {
 
 	public Episode classify(List<Action> actions) {
-		System.out.println("ALL: " + actions);
-		
 		List<Action> news = slimming(actions);
-		
-		System.out.println("SLIMMING: " + news);
 		
 		Episode episode = null;
 		
@@ -44,6 +40,12 @@ public class EpisodeClassifier extends AbstractClassifier implements Classifier 
 				ProductionClassifier production = new ProductionClassifier();
 				episode = production.classify(actions);
 			}
+			
+			if (episode == null) {
+				UnknownClassifier unknown = new UnknownClassifier();
+				episode = unknown.classify(actions);
+			}
+			
 		}
 		
 		return episode;

@@ -48,7 +48,7 @@ public class EpisodeFileStorage implements EpisodeListener {
 		writer.append("" + e.getTimestamp());
 		writer.append(" " + e.getCategory());
 		writer.append(" " + e.getDuration());
-		writer.append(" " + e.isTDD());
+		writer.append(" " + e.isTdd());
 		writer.append("\n");
 		writer.flush();
 		writer.close();

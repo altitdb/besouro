@@ -49,7 +49,7 @@ public class DisagreementPopupMenu {
 					
 					Episode episode = (Episode) selection.getFirstElement();
 					
-					if (episode.isTDD()) {
+					if (episode.isTdd()) {
 						mngr.add(nonConformAction);
 					} else {
 						mngr.add(conformAction);

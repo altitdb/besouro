@@ -30,6 +30,28 @@ public class RefactoringClassifierTest {
 	}
 	
 	@Test
+	public void shoudReturnRefactoringEpisodeWithTestAndCodeEditing() {
+		List<Action> actions = new ArrayList<Action>();
+		actions.add(new TestCodingAction(new Date(), null));
+		actions.add(new TestFailureAction(new Date(), null));
+		actions.add(new ProductionCodingAction(new Date(), null));
+		actions.add(new TestSuccessfullAction(new Date(), null));
+		Episode episode = classifier.classify(actions);
+		Assert.assertEquals(DevelopmentType.REFACTORING, episode.getCategory());
+	}
+	
+	@Test
+	public void shoudReturnRefactoringEpisodeWithCodeAndTestEditing() {
+		List<Action> actions = new ArrayList<Action>();
+		actions.add(new ProductionCodingAction(new Date(), null));
+		actions.add(new TestFailureAction(new Date(), null));
+		actions.add(new TestCodingAction(new Date(), null));
+		actions.add(new TestSuccessfullAction(new Date(), null));
+		Episode episode = classifier.classify(actions);
+		Assert.assertEquals(DevelopmentType.REFACTORING, episode.getCategory());
+	}
+
+	@Test
 	public void shoudReturnRefactoringEpisodeWithSuccessForTestEditing() {
 		List<Action> actions = new ArrayList<Action>();
 		actions.add(new TestCodingAction(new Date(), null));

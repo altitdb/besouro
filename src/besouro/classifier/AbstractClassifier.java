@@ -19,6 +19,10 @@ public abstract class AbstractClassifier {
 			}
 		}
 		
+		if (newActions.get(0).isTestSuccessfullAction()) {
+			newActions.remove(0);
+		}
+		
 		return newActions;
 	}
 }

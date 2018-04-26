@@ -77,6 +77,20 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 			} else {
 				processMove(fromDelta, toDelta);
 			}
+		} else if (!additions.isEmpty() && !changes.isEmpty()){
+			for (IJavaElementDelta i : additions) {
+				processUnary(javaFile, ADD_OPERATION, i);
+			}
+		} else if (!deletions.isEmpty() && !changes.isEmpty()){
+			for (IJavaElementDelta i : changes) {
+				processUnary(javaFile, REMOVE_OPERATION, i);
+			}
+		} else if (!changes.isEmpty()){
+			for (IJavaElementDelta i : changes) {
+				if (!i.toString().contains("{PRIMARY WORKING COPY}")) {
+					processUnary(javaFile, CHANGE_OPERATION, i);
+				}
+			}
 		} else if (!additions.isEmpty()) {
 			for (IJavaElementDelta i : additions) {
 				processUnary(javaFile, ADD_OPERATION, i);
@@ -87,13 +101,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 					processUnary(javaFile, REMOVE_OPERATION, i);
 				}
 			}
-		} else if (!changes.isEmpty()){
-			for (IJavaElementDelta i : changes) {
-				if (!i.toString().contains("{PRIMARY WORKING COPY}")) {
-					processUnary(javaFile, CHANGE_OPERATION, i);
-				}
-			}
-		}
+		} 
 	}
 
 	private void processUnary(IResource javaFile, String operation, IJavaElementDelta delta) {
@@ -119,7 +127,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 				if (classFileName.toString().contains(TEST_PACKAGE)) {
 					TestAction action;
 					boolean isAddMethod = METHOD_TYPE.equals(type) && ADD_OPERATION.equals(operation);
-					if (isAddMethod || (lastAction != null && lastAction.isTestCreationAction())) {
+					if (isAddMethod || (!REMOVE_OPERATION.equals(operation) && lastAction != null && lastAction.isTestCreationAction())) {
 						action = new TestCreationAction(new Date(), element.getResource().getName());
 					} else {
 						action = new TestCodingAction(new Date(), element.getResource().getName());

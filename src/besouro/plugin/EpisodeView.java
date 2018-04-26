@@ -183,9 +183,9 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				
 				String imgFileName = "icons/";
 				
-				if (episode.isTDD() == null) {
+				if (episode.isTdd() == null) {
 					imgFileName += "episode";
-				} else if (episode.isTDD()) {
+				} else if (episode.isTdd()) {
 					imgFileName += "episode_conformant";
 				} else {
 					imgFileName += "episode_nonconformant";

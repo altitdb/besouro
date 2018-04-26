@@ -3,6 +3,7 @@ package besouro.classifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import besouro.model.DevelopmentType;
 import besouro.model.Episode;
 import besouro.model.TDDMeasure;
 import besouro.model.action.Action;
@@ -42,13 +43,27 @@ public class EpisodeClassifierStream implements EpisodesRecognizerActionStream {
 			
 			if (episode != null) {
 				actions.clear();
-				measure.addEpisode(episode);
+				
+				if (!episodes.isEmpty()) {
+					int indexLastEpisode = episodes.size() - 1;
+					Episode lastEpisode = episodes.get(indexLastEpisode);
+					if ((lastEpisode.isTestFirst() || lastEpisode.isTdd()) && episode.isRefactoring()) {
+						episode = new Episode();
+						episode.setClassification(DevelopmentType.TEST_DRIVEN_DEVELOPMENT);
+						episode.getActions().addAll(lastEpisode.getActions());
+						episode.getActions().addAll(episode.getActions());
+						episodes.remove(indexLastEpisode);
+					}
+				}
+				
 				episodes.add(episode);
+				measure.update(episodes);
 				
 				for (EpisodeListener episodeListener : listeners) {
 					episodeListener.episodeRecognized(episode);
 				}
 				
+				System.out.println("-----------------");
 				System.out.println(episode);
 				System.out.println("-----------------");
 				System.out.println("episodes: " + measure.countEpisodes());

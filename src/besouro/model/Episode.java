@@ -18,10 +18,6 @@ public class Episode {
 		
 	}
 
-	public void setPreviousEpisode(Episode previousEpisode) {
-		this.previousEpisode = previousEpisode;
-	}
-	
 	public void setClassification(String category) {
 		this.category = category;
 	}
@@ -40,9 +36,21 @@ public class Episode {
 	public String getCategory() {
 		return category;
 	}
+	
+	public Boolean isTestFirst() {
+		return DevelopmentType.TEST_FIRST.equals(category);
+	}
+	
+	public Boolean isRefactoring() {
+		return DevelopmentType.REFACTORING.equals(category);
+	}
 
-	public Boolean isTDD() {
+	public Boolean isTdd() {
 		return DevelopmentType.TEST_DRIVEN_DEVELOPMENT.equals(category);
+	}
+	
+	public Boolean isUnknown() {
+		return DevelopmentType.UNKNOWN.equals(category);
 	}
 
 	public void setDuration(int i) {
