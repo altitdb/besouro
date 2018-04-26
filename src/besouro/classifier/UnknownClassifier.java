@@ -12,7 +12,7 @@ public class UnknownClassifier extends AbstractClassifier implements Classifier 
 		List<Action> actions = slimming(paramActions);
 
 		Episode episode = null;
-		if (actions.get(0).isTestFailureAction()) {
+		if (!actions.isEmpty() && actions.get(0).isTestFailureAction()) {
 			episode = createEpisode(paramActions);
 		}
 		

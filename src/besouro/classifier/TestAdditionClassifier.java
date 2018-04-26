@@ -12,7 +12,7 @@ public class TestAdditionClassifier extends AbstractClassifier implements Classi
 		List<Action> actions = slimming(paramActions);
 
 		Episode episode = null;
-		if (actions.size() % 2 == 0) {
+		if (!actions.isEmpty() && actions.size() % 2 == 0) {
 			if (actions.get(0).isTestCreationAction() && actions.get(actions.size() - 1).isTestSuccessfullAction()) {
 				boolean isTestAddition = true;
 				for (int i = 1; i < actions.size() - 1; i++) {

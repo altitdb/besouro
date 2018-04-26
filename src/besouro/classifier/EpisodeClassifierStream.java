@@ -48,10 +48,12 @@ public class EpisodeClassifierStream implements EpisodesRecognizerActionStream {
 					int indexLastEpisode = episodes.size() - 1;
 					Episode lastEpisode = episodes.get(indexLastEpisode);
 					if ((lastEpisode.isTestFirst() || lastEpisode.isTdd()) && episode.isRefactoring()) {
+						List<Action> episodeActions = new ArrayList<Action>();
+						episodeActions.addAll(lastEpisode.getActions());
+						episodeActions.addAll(episode.getActions());
 						episode = new Episode();
 						episode.setClassification(DevelopmentType.TEST_DRIVEN_DEVELOPMENT);
-						episode.getActions().addAll(lastEpisode.getActions());
-						episode.getActions().addAll(episode.getActions());
+						episode.getActions().addAll(episodeActions);
 						episodes.remove(indexLastEpisode);
 					}
 				}

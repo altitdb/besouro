@@ -7,47 +7,34 @@ import besouro.model.action.Action;
 
 public class EpisodeClassifier extends AbstractClassifier implements Classifier {
 
-	public Episode classify(List<Action> actions) {
-		List<Action> news = slimming(actions);
-		
+	public Episode classify(List<Action> news) {
 		Episode episode = null;
 		
-		if (news.size() > 5) {
-			TestDrivenDevelopmentClassifier testDrivenDevelopment = new TestDrivenDevelopmentClassifier();
-			episode = testDrivenDevelopment.classify(actions);
+		if (!news.isEmpty()) {
 			
-			if (episode == null) {
-				TestFirstClassifier testFirst = new TestFirstClassifier();
-				episode = testFirst.classify(actions);
-			}
+			TestFirstClassifier testFirst = new TestFirstClassifier();
+			episode = testFirst.classify(news);
 			
 			if (episode == null) {
 				TestLastClassifier testLast = new TestLastClassifier();
-				episode = testLast.classify(actions);
+				episode = testLast.classify(news);
 			}
 			
 			if (episode == null) {
 				TestAdditionClassifier testAddition = new TestAdditionClassifier();
-				episode = testAddition.classify(actions);
-			}
-				
-			if (episode == null) {
-				RefactoringClassifier refactoring = new RefactoringClassifier();
-				episode = refactoring.classify(actions);
+				episode = testAddition.classify(news);
 			}
 			
 			if (episode == null) {
-				ProductionClassifier production = new ProductionClassifier();
-				episode = production.classify(actions);
+				RefactoringClassifier refactoring = new RefactoringClassifier();
+				episode = refactoring.classify(news);
 			}
 			
 			if (episode == null) {
 				UnknownClassifier unknown = new UnknownClassifier();
-				episode = unknown.classify(actions);
+				episode = unknown.classify(news);
 			}
-			
 		}
-		
 		return episode;
 	}
 
