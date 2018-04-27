@@ -12,11 +12,11 @@ import besouro.listeners.WindowListener;
 import besouro.model.action.Action;
 import besouro.stream.ActionOutputStream;
 
-public class BesouroListenerSet implements ActionOutputStream {
+public class BesouroConfigureListener implements ActionOutputStream {
 
-	private static final BesouroListenerSet BESOURO_LISTENER = new BesouroListenerSet();
+	private static final BesouroConfigureListener BESOURO_LISTENER = new BesouroConfigureListener();
 	
-	public static BesouroListenerSet getSingleton() {
+	public static BesouroConfigureListener getSingleton() {
 		return BESOURO_LISTENER;
 	}
 
@@ -26,7 +26,7 @@ public class BesouroListenerSet implements ActionOutputStream {
 	private JavaStructureChangeListener javaListener;
 	private JUnitListener junitListener;
 	
-	private BesouroListenerSet(){
+	private BesouroConfigureListener(){
 		windowListener = new WindowListener(this);
 		resourceListener = new ResourceChangeListener(this);
 		javaListener = new JavaStructureChangeListener(this);

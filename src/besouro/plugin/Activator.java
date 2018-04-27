@@ -4,16 +4,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-//TODO [data] is it necessary to agregate continuous edits in documents?
-
-
-//TODO [rule]  if i write a test, fail, comment the test out to refactor and test pass, it recognizes as tstAdd2, tstAdd1, tstAdd2, tstAdd1 
-
-
-
-/**
- * The activator class controls the plug-in life cycle
- */
 public class Activator extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "test_plugin";

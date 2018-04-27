@@ -15,7 +15,7 @@ import besouro.stream.EpisodeListener;
 
 public class ProgrammingSession implements ActionOutputStream {
 
-	private BesouroListenerSet eclipseListenerSet;
+	private BesouroConfigureListener eclipseListenerSet;
 	private ActionFileStorage actionStorage;
 	private EpisodeFileStorage disagreementsStorage;
 	private EpisodeFileStorage userCommentsEpisodesStorage;
@@ -29,10 +29,10 @@ public class ProgrammingSession implements ActionOutputStream {
 	private EpisodeClassifierStream episodeClassifierStream;
 
 	public static ProgrammingSession newSession(File basedir) {
-		return newSession(basedir, BesouroListenerSet.getSingleton());
+		return newSession(basedir, BesouroConfigureListener.getSingleton());
 	}
 	
-	public static ProgrammingSession newSession(File basedir, BesouroListenerSet listeners) {
+	public static ProgrammingSession newSession(File basedir, BesouroConfigureListener listeners) {
 		if(currentSession!=null){
 			currentSession.close();
 		}
@@ -40,7 +40,7 @@ public class ProgrammingSession implements ActionOutputStream {
 		return currentSession;
 	}
 	
-	private ProgrammingSession(File basedir, BesouroListenerSet listeners) {
+	private ProgrammingSession(File basedir, BesouroConfigureListener listeners) {
 		String timestamp = new SimpleDateFormat("yyyyMMddHHmmssS").format(new Date());
 		
 		File besouroDir = new File(basedir, ".besouro");

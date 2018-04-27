@@ -10,7 +10,6 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.runtime.CoreException;
 
-import besouro.measure.BuildErrorSensor;
 import besouro.measure.JavaStatementMeter;
 import besouro.model.action.EditAction;
 import besouro.stream.ActionOutputStream;
@@ -27,12 +26,10 @@ import besouro.stream.ActionOutputStream;
 public class ResourceChangeListener implements IResourceChangeListener, IResourceDeltaVisitor {
 
 	private ActionOutputStream sensor;
-	private BuildErrorSensor buildErrorSensor;
 	private JavaStatementMeter measurer = new JavaStatementMeter();
 
-	public ResourceChangeListener(ActionOutputStream s) {
-		this.sensor = s;
-		buildErrorSensor = new BuildErrorSensor(sensor);
+	public ResourceChangeListener(ActionOutputStream sensor) {
+		this.sensor = sensor;
 	}
 
 	public void resourceChanged(IResourceChangeEvent event) {
@@ -51,10 +48,6 @@ public class ResourceChangeListener implements IResourceChangeListener, IResourc
 		if (resource instanceof IFile && resource.getLocation().toString().endsWith(".java")) {
 			int flag = delta.getFlags();
 			int kind = delta.getKind();
-			
-			if ((flag & IResourceDelta.MARKERS) != 0) {
-				buildErrorSensor.findBuildProblem(delta);
-			}
 			
 			if ((kind == IResourceDelta.CHANGED) && (flag == IResourceDelta.CONTENT || flag == IResourceDelta.MARKERS)) {
 					IFile changedFile = (IFile) resource;

@@ -29,7 +29,6 @@ import besouro.model.Episode;
 import besouro.model.action.Action;
 import besouro.stream.EpisodeListener;
 
-//TODO Separate classes in files
 public class EpisodeView extends ViewPart implements EpisodeListener {
 
 	public static final String ID = "besouro.view.EpisodeView";

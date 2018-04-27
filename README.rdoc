@@ -1,12 +1,17 @@
 = Besouro
 
-Besouro is an adaptation of Zorro[http://www.citeulike.org/group/3370/tag/zorro], an automated TDD behaviour recognizer. 
-(The original SDSA/Zorro code was obtained from here[http://code.google.com/p/hackystat-ui-zorro/].)
+This is a new Besouro version without external dependencies like Jess and Zorro.
 
-The main difference between them, so far, is that Zorro relies on Hackystat[http://www.hackystat.org/] and Besouro is a stand-alone Eclipse Plugin.
+This version contains some improvements and different classifications about iterative software development. The classifications are:
 
-Besouro was initially built to make the Zorro's rule system available for a TDD empirical evaluation, once it became obsolete since Hackystat evolved to it's new architecture, on version 8.
+=== Test Addition
+=== Test-first
+=== Test-last
+=== Test Driven Development
+=== Refactoring
+=== Unknown
 
+The readme below is deprecate, and received a new updates as soon as possible.
 
 = How To Build Besouro
 
