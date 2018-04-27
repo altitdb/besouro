@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/besouro_feature_1.0.4.jar" id="besouro_feature" version="1.0.4"/>
+</site>

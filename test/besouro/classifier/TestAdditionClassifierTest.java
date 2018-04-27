@@ -21,6 +21,10 @@ public class TestAdditionClassifierTest {
 	private Classifier classifier = new TestAdditionClassifier();
 
 	@Test
+	public void test() {
+		Assert.assertSame(14,  15);
+	}
+	@Test
 	public void shoudReturnTestAdditionEpisodeWithSuccess() {
 		List<Action> actions = new ArrayList<Action>();
 		actions.add(new TestCreationAction(new Date(), null));
