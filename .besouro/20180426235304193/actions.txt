@@ -21,3 +21,4 @@ EditAction 1524797896689 WindowListener.java 3217 15 6 0
 EditAction 1524797897292 GitRecorder.java 1459 6 6 0
 EditAction 1524797919193 JUnitListener.java 3477 4 13 0
 EditAction 1524797920297 WindowListener.java 3217 15 6 0
+EditAction 1524797920991 GitRecorder.java 1459 6 6 0
