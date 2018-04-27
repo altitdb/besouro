@@ -18,3 +18,4 @@ TestCreationAction 1524797646237 TestAdditionClassifierTest.java CHANGE TestAddi
 EditAction 1524797646257 TestAdditionClassifierTest.java 3883 5 50 5
 EditAction 1524797895747 JUnitListener.java 3477 4 13 0
 EditAction 1524797896689 WindowListener.java 3217 15 6 0
+EditAction 1524797897292 GitRecorder.java 1459 6 6 0
