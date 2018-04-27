@@ -37,10 +37,12 @@ public class EpisodeFileStorage implements EpisodeListener {
 	}
 	
 	private void saveEpisodeToFile(Episode episode) throws IOException {
-		writer.append(String.valueOf(episode.getTimestamp()));
+		String space = " ";
 		writer.append(String.valueOf(episode.getCategory()));
+		writer.append(space);
+		writer.append(String.valueOf(episode.getTimestamp()));
+		writer.append(space);
 		writer.append(String.valueOf(episode.getDuration()));
-		writer.append(String.valueOf(episode.isTdd()));
 		writer.append("\n");
 		writer.append("Actions");
 		writer.append(String.valueOf(episode.getActions()));

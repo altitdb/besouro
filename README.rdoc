@@ -11,7 +11,7 @@ This version contains some improvements and different classifications about iter
 === Refactoring
 === Unknown
 
-The readme below is deprecate, and received a new updates as soon as possible.
+The readme below is deprecate and received a new updates as soon as possible.
 
 = How To Build Besouro
 
