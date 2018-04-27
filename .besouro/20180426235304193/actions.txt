@@ -16,3 +16,4 @@ EditAction 1524797634569 TestAdditionClassifierTest.java 3949 6 51 6
 TestSuccessfullAction 1524797637667 TestAdditionClassifierTest.java OK
 TestCreationAction 1524797646237 TestAdditionClassifierTest.java CHANGE TestAdditionClassifierTest.java CLASS CHANGE TestAdditionClassifierTest.java CLASS
 EditAction 1524797646257 TestAdditionClassifierTest.java 3883 5 50 5
+EditAction 1524797895747 JUnitListener.java 3477 4 13 0
