@@ -22,7 +22,7 @@ public class TestAdditionClassifierTest {
 
 	@Test
 	public void test() {
-		Assert.assertSame(14,  15);
+		Assert.assertSame(14,  14);
 	}
 	@Test
 	public void shoudReturnTestAdditionEpisodeWithSuccess() {

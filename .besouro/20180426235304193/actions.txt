@@ -10,3 +10,6 @@ TestSuccessfullAction 1524797604214 TestAdditionClassifierTest.java OK
 TestCreationAction 1524797615544 TestAdditionClassifierTest.java ADD void test() METHOD ADD void test() METHOD
 TestCreationAction 1524797622343 TestAdditionClassifierTest.java CHANGE TestAdditionClassifierTest.java CLASS CHANGE TestAdditionClassifierTest.java CLASS
 EditAction 1524797622351 TestAdditionClassifierTest.java 3949 6 51 6
+TestFailureAction 1524797630010 TestAdditionClassifierTest.java FAIL
+TestCreationAction 1524797634542 TestAdditionClassifierTest.java CHANGE TestAdditionClassifierTest.java CLASS CHANGE TestAdditionClassifierTest.java CLASS
+EditAction 1524797634569 TestAdditionClassifierTest.java 3949 6 51 6
