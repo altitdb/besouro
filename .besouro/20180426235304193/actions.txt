@@ -13,3 +13,6 @@ EditAction 1524797622351 TestAdditionClassifierTest.java 3949 6 51 6
 TestFailureAction 1524797630010 TestAdditionClassifierTest.java FAIL
 TestCreationAction 1524797634542 TestAdditionClassifierTest.java CHANGE TestAdditionClassifierTest.java CLASS CHANGE TestAdditionClassifierTest.java CLASS
 EditAction 1524797634569 TestAdditionClassifierTest.java 3949 6 51 6
+TestSuccessfullAction 1524797637667 TestAdditionClassifierTest.java OK
+TestCreationAction 1524797646237 TestAdditionClassifierTest.java CHANGE TestAdditionClassifierTest.java CLASS CHANGE TestAdditionClassifierTest.java CLASS
+EditAction 1524797646257 TestAdditionClassifierTest.java 3883 5 50 5
