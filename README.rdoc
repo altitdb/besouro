@@ -1,6 +1,6 @@
-= Besouro
+= Butterfly
 
-This is a new Besouro version without external dependencies like Jess and Zorro.
+This is a new Butterfly version without external dependencies like Jess and Zorro.
 
 This version contains some improvements and different classifications about iterative software development. The classifications are:
 
@@ -13,40 +13,40 @@ This version contains some improvements and different classifications about iter
 
 The readme below is deprecate and received a new updates as soon as possible.
 
-= How To Build Besouro
+= How To Build Butterfly
 
 First of all, you need to download the Eclipse SDK, containing the Eclipse Plug-in Development Environment (PDE). 
 You can download it from here[http://www.eclipse.org/pde/]
 
-Download Besouro's source files from here[https://github.com/brunopedroso/besouro]. 
+Download Butterfly's source files from here[https://github.com/brunopedroso/Butterfly]. 
 You can simply download the files, you can clone it with git, if you want to modify it, 
-or you can fork it in github if you intend to contribute your changes back to Besouro.
+or you can fork it in github if you intend to contribute your changes back to Butterfly.
 
 You will need to download/clone two more repositories. 
 The Eclipse Feature 
-	https://github.com/brunopedroso/besouro_feature,
+	https://github.com/brunopedroso/Butterfly_feature,
 	
 and the Eclipse update site 
-	https://github.com/brunopedroso/besouro_site. 
+	https://github.com/brunopedroso/Butterfly_site. 
 	
 These projects are not part of the plugin code itself. You can create them with eclipse wizzards if you prefer. They are being provided
 just for simplicity.
 
 Launch the Eclipse SDK and open the three projects.
 
-The main Besouro project will present you an error because of a missing library.
+The main Butterfly project will present you an error because of a missing library.
 It is the Jess Rule engine, which, until the time of this writing could not be redistributed
 due to it's non-open-source license. You should be able to download it from here[http://www.jessrules.com/].
 
-(Besouro uses JESS because it is derived from Zorro[http://code.google.com/p/hackystat-ui-zorro/].
-It would be great to provide a binary distribution of besouro, ready for use. Or at least to
+(Butterfly uses JESS because it is derived from Zorro[http://code.google.com/p/hackystat-ui-zorro/].
+It would be great to provide a binary distribution of Butterfly, ready for use. Or at least to
 provide all its dependencies with the source code. But now it is impossible due to Jess License.
-If someone wants to help replacing Jess from Besouro, please let me know!)
+If someone wants to help replacing Jess from Butterfly, please let me know!)
 
 After you get your copy of Jess library, you can simply put it
-into the 'lib' folder inside Besouro project, and the project should compile successfully after a refresh.
+into the 'lib' folder inside Butterfly project, and the project should compile successfully after a refresh.
 
-Then open the site.xml file inside the besouro_site project and press the 'build' button. 
+Then open the site.xml file inside the Butterfly_site project and press the 'build' button. 
 Eclipse will compile everything and put the binaries inside the update site project.
 
 This project is now a complete update site you can point your eclipse to. You can also make this directory 
@@ -55,33 +55,28 @@ available in a HTTP URL in order to make the plugin available for installing in 
 It should be enough. If you have any problem, don't hesitate to send me an email at bruno pedroso at gmail dot com.
 
 
-= Installing Besouro
+= Installing Butterfly
 
-If you correctly followed the instructions for building Besouro above, you now have a directory (or a URL) with the
+If you correctly followed the instructions for building Butterfly above, you now have a directory (or a URL) with the
 update site. 
 
 Launch Eclipse. Select help -> Install new Software, and add the update site to the list of available sites. Follow the wizard 
 and you are done!
 
-(The original experiment's instructions for install are here[https://sites.google.com/site/besouroeval/installing-besouro]. 
+(The original experiment's instructions for install are here[https://sites.google.com/site/Butterflyeval/installing-Butterfly]. 
 The only thing that is not working anymore is the update site URL provided. Replace it with the update site you created 
 with the above instructions.)
  
  
-= Using Besouro
+= Using Butterfly
 
-Please, refer to the original experiment's instructions that must still be available here[https://sites.google.com/site/besouroeval/code-your-kata].
+Please, refer to the original experiment's instructions that must still be available here[https://sites.google.com/site/Butterflyeval/code-your-kata].
 
-https://sites.google.com/site/besouroeval
+https://sites.google.com/site/Butterflyeval
 
 If you have any problem, don't hesitate to send me an email at bruno pedroso at gmail dot com.
 
 
 = Giving feedback
 
-Please let me know what do you think about Besouro. Email me an email at bruno pedroso at gmail dot com anytime!
-
-
-= License
-
-This code inherits the ApacheLicense[http://www.apache.org/licenses/LICENSE-2.0] once its an adaptation of Zorro[http://code.google.com/p/hackystat-ui-zorro/].
+Please let me know what do you think about Butterfly. Email me an email at altitdb at gmail dot com anytime!

@@ -3,9 +3,9 @@
 <plugin>
    <extension point="org.eclipse.ui.views">
       <view
-            class="besouro.plugin.EpisodeView"
+            class="br.edu.utfpr.butterfly.plugin.EpisodeView"
             icon="icons/episode.png"
-            id="besouro.plugin.EpisodeView"
+            id="br.edu.utfpr.butterfly.plugin.EpisodeView"
             name="EpisodeView"
             restorable="true">
       </view>
