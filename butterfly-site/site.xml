@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/butterfly-feature_2.0.0.jar" id="butterfly-feature" version="2.0.0"/>
+</site>
