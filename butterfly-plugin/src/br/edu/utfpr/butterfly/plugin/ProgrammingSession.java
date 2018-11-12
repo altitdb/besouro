@@ -9,6 +9,7 @@ import br.edu.utfpr.butterfly.model.Episode;
 import br.edu.utfpr.butterfly.model.action.Action;
 import br.edu.utfpr.butterfly.persistence.ActionFileStorage;
 import br.edu.utfpr.butterfly.persistence.EpisodeFileStorage;
+import br.edu.utfpr.butterfly.persistence.ErrorFileStorage;
 import br.edu.utfpr.butterfly.persistence.GitRecorder;
 import br.edu.utfpr.butterfly.stream.ActionOutputStream;
 import br.edu.utfpr.butterfly.stream.EpisodeListener;
@@ -20,10 +21,12 @@ public class ProgrammingSession implements ActionOutputStream {
 	private EpisodeFileStorage disagreementsStorage;
 	private EpisodeFileStorage userCommentsEpisodesStorage;
 	private EpisodeFileStorage episodeClassfierStorage;
+	private ErrorFileStorage errorStorage;
 	private File actionsFile;
 	private File episodeClassfierFile;
 	private File disagreementsFile;
 	private File userCommentsFile;
+	private File errorFile;
 	private GitRecorder git;
 	private static ProgrammingSession currentSession;
 	private EpisodeClassifierStream episodeClassifierStream;
@@ -63,6 +66,9 @@ public class ProgrammingSession implements ActionOutputStream {
 		userCommentsFile = new File(sessionDir, "comments.txt");
 		userCommentsEpisodesStorage = new EpisodeFileStorage(userCommentsFile);
 		
+		errorFile = new File(sessionDir, "error.txt");
+        errorStorage = new ErrorFileStorage(errorFile);
+		
 		eclipseListenerSet = listeners;
 		eclipseListenerSet.setOutputStream(this);
 		
@@ -75,10 +81,14 @@ public class ProgrammingSession implements ActionOutputStream {
 	}
 
 	public void addAction(Action action) {
-		System.out.println(action);
-		actionStorage.addAction(action);
-		episodeClassifierStream.addAction(action);
-		git.addAction(action);
+	    try {
+	        System.out.println(action);
+	        actionStorage.addAction(action);
+	        episodeClassifierStream.addAction(action);
+	        git.addAction(action);
+	    } catch (Exception ex) {
+	        errorStorage.log(ex);
+	    }
 	}
 
 	public void disagreeFromEpisode(Episode episode) {

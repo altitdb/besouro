@@ -32,6 +32,7 @@ import br.edu.utfpr.butterfly.stream.EpisodeListener;
 public class EpisodeView extends ViewPart implements EpisodeListener {
 
 	public static final String ID = "br.edu.utfpr.butterfly.plugin.EpisodeView";
+	private static final String BUTTERFLY_PLUGIN = "butterfly";
 	
 	private ProgrammingSession currentSession;
 	
@@ -55,9 +56,9 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 	
 	private final class StopAction extends org.eclipse.jface.action.Action {
 		
-		public StopAction(){
+        public StopAction(){
 			setText("Stop");
-			setImageDescriptor(Activator.imageDescriptorFromPlugin("butterfly_plugin", "icons/nav_stop.gif"));
+			setImageDescriptor(Activator.imageDescriptorFromPlugin(BUTTERFLY_PLUGIN, "icons/nav_stop.gif"));
 		}
 
 		public void run() {
@@ -78,7 +79,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		
 		public StartAction(){
 			setText("Start");
-			setImageDescriptor(Activator.imageDescriptorFromPlugin("butterfly_plugin", "icons/start_task.gif"));
+			setImageDescriptor(Activator.imageDescriptorFromPlugin(BUTTERFLY_PLUGIN, "icons/start_task.gif"));
 		}
 		
 		public void run() {
@@ -196,9 +197,9 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 				
 				imgFileName += ".png";
 				
-				return Activator.imageDescriptorFromPlugin("butterfly_plugin", imgFileName).createImage();
+				return Activator.imageDescriptorFromPlugin(BUTTERFLY_PLUGIN, imgFileName).createImage();
 			} else if (obj instanceof Action) {
-				return Activator.imageDescriptorFromPlugin("butterfly_plugin", "icons/action.gif").createImage();
+				return Activator.imageDescriptorFromPlugin(BUTTERFLY_PLUGIN, "icons/action.gif").createImage();
 			} else if (obj instanceof String) {
 				return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_INFO_TSK);
 			} else {
