@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "butterfly-site",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
