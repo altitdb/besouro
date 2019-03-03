@@ -42,15 +42,15 @@ public class ButterflyView extends ViewPart implements EpisodeListener {
 	private Label statusLabel;
 	private TreeViewer viewer;
 
-	public static EpisodeView sharedInstance;
+	public static ButterflyView sharedInstance;
 	
-	public static EpisodeView getInstance() {
+	public static ButterflyView getInstance() {
 		return sharedInstance;
 	}
 
 	public ButterflyView() {
 		super();
-		EpisodeView.sharedInstance = this;
+		ButterflyView.sharedInstance = this;
 	}
 
 	
@@ -109,7 +109,7 @@ public class ButterflyView extends ViewPart implements EpisodeListener {
 			if (projectRootDir != null) {
 				
 				currentSession = ProgrammingSession.newSession(projectRootDir);
-				currentSession.addEpisodeListeners(EpisodeView.this);
+				currentSession.addEpisodeListeners(ButterflyView.this);
 				viewer.setInput(currentSession.getEpisodes());
 				
 				viewer.getControl().setMenu(new DisagreementPopupMenu(viewer, currentSession).getMenu());
