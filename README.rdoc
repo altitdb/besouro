@@ -18,7 +18,7 @@ Download Butterfly's source files from here[https://github.com/altitdb/butterfly
 You can simply download the files, you can clone it with git, if you want to modify it, 
 or you can fork it in github if you intend to contribute your changes back to Butterfly.
 	
-These projects are not part of the plugin code itself. You can create them with eclipse wizzards if you prefer. They are being provided just for simplicity.
+These projects are not part of the plugin code itself. You can create them with eclipse wizards if you prefer. They are being provided just for simplicity.
 
 Then open the site.xml file inside the butterfly-site project and press the 'build' button. 
 Eclipse will compile everything and put the binaries inside the update site project.
@@ -30,8 +30,7 @@ It should be enough. If you have any problem, don't hesitate to send me an email
 
 = Installing Butterfly
 
-If you correctly followed the instructions for building Butterfly above, you now have a directory (or a URL) with the
-update site. 
+Update Site: https://butterfly-plugin.firebaseapp.com/
 
 Launch Eclipse. Select help -> Install new Software, and add the update site to the list of available sites. Follow the wizard and you are done!
 
