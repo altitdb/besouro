@@ -29,9 +29,9 @@ import br.edu.utfpr.butterfly.model.Episode;
 import br.edu.utfpr.butterfly.model.action.Action;
 import br.edu.utfpr.butterfly.stream.EpisodeListener;
 
-public class EpisodeView extends ViewPart implements EpisodeListener {
+public class ButterflyView extends ViewPart implements EpisodeListener {
 
-	public static final String ID = "br.edu.utfpr.butterfly.plugin.EpisodeView";
+	public static final String ID = "br.edu.utfpr.butterfly.plugin.ButterflyView";
 	private static final String BUTTERFLY_PLUGIN = "butterfly";
 	
 	private ProgrammingSession currentSession;
@@ -48,7 +48,7 @@ public class EpisodeView extends ViewPart implements EpisodeListener {
 		return sharedInstance;
 	}
 
-	public EpisodeView() {
+	public ButterflyView() {
 		super();
 		EpisodeView.sharedInstance = this;
 	}

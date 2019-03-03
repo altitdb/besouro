@@ -3,10 +3,10 @@
 <plugin>
    <extension point="org.eclipse.ui.views">
       <view
-            class="br.edu.utfpr.butterfly.plugin.EpisodeView"
+            class="br.edu.utfpr.butterfly.plugin.ButterflyView"
             icon="icons/episode.png"
-            id="br.edu.utfpr.butterfly.plugin.EpisodeView"
-            name="EpisodeView"
+            id="br.edu.utfpr.butterfly.plugin.ButterflyView"
+            name="Butterfly"
             restorable="true">
       </view>
    </extension>
