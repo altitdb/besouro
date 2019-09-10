@@ -9,7 +9,7 @@ public class TDDMeasure {
 	private float numberOfNonTDDEpisodes;
 	private float durationOfTDDEpisodes;
 	private float durationOfNonTDDEpisodes;
-	private List<Episode> episodes = new ArrayList<Episode>();
+	private List<Episode> episodes = new ArrayList<>();
 	
 	public TDDMeasure() {
 	}

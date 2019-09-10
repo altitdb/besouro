@@ -21,12 +21,10 @@ import br.edu.utfpr.butterfly.stream.ActionOutputStream;
 
 public class WindowListener implements IWindowListener, IPartListener, IDocumentListener {
 
-	//TODO private ActionOutputStream stream;
 	private IWorkbench workbench;
 	private JavaStatementMeter measurer = new JavaStatementMeter();
 	
 	public WindowListener(ActionOutputStream stream) {
-		//this.stream = stream;
 	}
 
 	public void setWorkbench(IWorkbench workbench) {
@@ -50,14 +48,10 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 		}
 	}
 
-	public void windowDeactivated(IWorkbenchWindow window) {
-	}
-
 	public void windowActivated(IWorkbenchWindow window) {
 	}
 
 	public void partOpened(IWorkbenchPart part) {
-		//registerFileOpenAction(part);
 	}
 
 	public void partActivated(IWorkbenchPart part) {
@@ -81,7 +75,6 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 	public void windowClosed(IWorkbenchWindow window) {
 	}
 
-
 	private void registerFileOpenAction(IWorkbenchPart part) {
 		if (part instanceof ITextEditor) {
 			ITextEditor textEditor = (ITextEditor) part;
@@ -100,7 +93,6 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 				action.setStatementsCount(meter.getNumOfStatements());
 				action.setTestMethodsCount(meter.getNumOfTestMethods());
 				action.setTestAssertionsCount(meter.getNumOfTestAssertions());
-				//TODO stream.addAction(action);
 			}
 		}
 	}
@@ -108,4 +100,8 @@ public class WindowListener implements IWindowListener, IPartListener, IDocument
 	public void setMeasurer(JavaStatementMeter meter) {
 		this.measurer = meter;
 	}
+
+    @Override
+    public void windowDeactivated(IWorkbenchWindow arg0) {
+    }
 }

@@ -9,7 +9,7 @@ public class Episode {
 
 	private String category;
 	private Integer duration;
-	private List<Action> actions = new ArrayList<Action>();
+	private List<Action> actions = new ArrayList<>();
 	private Episode previousEpisode;
 	private Long timestamp;
 	private Boolean disagree = false;

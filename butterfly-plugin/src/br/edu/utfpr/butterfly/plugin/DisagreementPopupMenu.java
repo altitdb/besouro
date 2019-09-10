@@ -184,7 +184,6 @@ public class DisagreementPopupMenu {
 				InputDialog dialog = new InputDialog(viewer.getControl().getShell(),"Comment", "Please enter your comment","",null);
 				
 				if(dialog.open() == IStatus.OK){ 
-					
 					String comment = dialog.getValue(); 
 					
 					Episode e = new Episode();
@@ -192,14 +191,11 @@ public class DisagreementPopupMenu {
 					e.setClassification(comment);
 					e.setDisagree(true);
 					session.commentEpisode(e);
-					
 				}
 				
 			}
 		};
 		commentAction.setText("Make a comment");
-		
-		
 	}
 	
 	public Menu getMenu() {
