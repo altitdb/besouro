@@ -18,9 +18,7 @@ public class DisagreementPopupMenu {
 
 	private TreeViewer viewer;
 	private ProgrammingSession session;
-	
 	private MenuManager mngr;
-	
 	private Action nonConformAction;
 	private Action conformAction;
 	private Action testFirstAction;

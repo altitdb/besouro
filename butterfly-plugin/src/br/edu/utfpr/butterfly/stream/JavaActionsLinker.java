@@ -7,7 +7,7 @@ import br.edu.utfpr.butterfly.model.action.JavaFileAction;
 
 public class JavaActionsLinker {
 
-	private Map<String, JavaFileAction> previousEditActionPerFile = new HashMap<String, JavaFileAction>();
+	private Map<String, JavaFileAction> previousEditActionPerFile = new HashMap<>();
 	
 	public void linkActions(JavaFileAction linkedAction) {
 		String path = linkedAction.getResource();

@@ -6,7 +6,7 @@ import org.osgi.framework.BundleContext;
 
 public class Activator extends AbstractUIPlugin {
 
-	public static final String PLUGIN_ID = "butterfly-plugin";
+	public static final String PLUGIN_ID = "butterfly";
 
 	private static Activator plugin;
 	

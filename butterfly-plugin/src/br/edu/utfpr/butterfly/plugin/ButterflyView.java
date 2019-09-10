@@ -32,7 +32,6 @@ import br.edu.utfpr.butterfly.stream.EpisodeListener;
 public class ButterflyView extends ViewPart implements EpisodeListener {
 
     public static final String ID = "br.edu.utfpr.butterfly.plugin.ButterflyView";
-    private static final String BUTTERFLY_PLUGIN = "butterfly";
 
     private ProgrammingSession currentSession;
 
@@ -57,7 +56,7 @@ public class ButterflyView extends ViewPart implements EpisodeListener {
 
         public StopAction() {
             setText("Stop");
-            setImageDescriptor(Activator.imageDescriptorFromPlugin(BUTTERFLY_PLUGIN, "icons/nav_stop.gif"));
+            setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/nav_stop.gif"));
         }
 
         public void run() {
@@ -80,7 +79,7 @@ public class ButterflyView extends ViewPart implements EpisodeListener {
 
         public StartAction() {
             setText("Start");
-            setImageDescriptor(Activator.imageDescriptorFromPlugin(BUTTERFLY_PLUGIN, "icons/start_task.gif"));
+            setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/start_task.gif"));
         }
 
         public void run() {
@@ -145,7 +144,6 @@ public class ButterflyView extends ViewPart implements EpisodeListener {
                 return ((Action) parentElement).getActionDetails().toArray();
             }
             return null;
-
         }
 
         public Object getParent(Object element) {
@@ -179,9 +177,9 @@ public class ButterflyView extends ViewPart implements EpisodeListener {
 
                 String imgFileName = getIcon(episode);
 
-                return Activator.imageDescriptorFromPlugin(BUTTERFLY_PLUGIN, imgFileName).createImage();
+                return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, imgFileName).createImage();
             } else if (obj instanceof Action) {
-                return Activator.imageDescriptorFromPlugin(BUTTERFLY_PLUGIN, "icons/action.gif").createImage();
+                return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/action.gif").createImage();
             } else if (obj instanceof String) {
                 return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_INFO_TSK);
             } else {

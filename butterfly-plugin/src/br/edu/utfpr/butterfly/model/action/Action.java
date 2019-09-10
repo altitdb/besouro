@@ -6,11 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-/**
- * Implements abstract command for build data or cli data.
- * 
- * @author Hongbing Kou
- */
 public abstract class Action implements Comparable<Action> {
 
 	private static final String TEST_PASS_ACTION = "TestPassAction";

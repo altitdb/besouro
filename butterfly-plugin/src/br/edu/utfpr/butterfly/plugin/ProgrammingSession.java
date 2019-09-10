@@ -27,7 +27,7 @@ public class ProgrammingSession implements ActionOutputStream {
 	private File disagreementsFile;
 	private File userCommentsFile;
 	private File errorFile;
-	private GitRecorder git;
+	//private GitRecorder git;
 	private static ProgrammingSession currentSession;
 	private EpisodeClassifierStream episodeClassifierStream;
 
@@ -72,20 +72,19 @@ public class ProgrammingSession implements ActionOutputStream {
 		eclipseListenerSet = listeners;
 		eclipseListenerSet.setOutputStream(this);
 		
-		git = new GitRecorder(basedir);
+		//git = new GitRecorder(basedir);
 	}
 	
 	public void start() {
 		eclipseListenerSet.registerListenersInEclipse();
-		git.createRepoIfNeeded();
+		//git.createRepoIfNeeded();
 	}
 
 	public void addAction(Action action) {
 	    try {
-	        System.out.println(action);
 	        actionStorage.addAction(action);
 	        episodeClassifierStream.addAction(action);
-	        git.addAction(action);
+	        //git.addAction(action);
 	    } catch (Exception ex) {
 	        errorStorage.log(ex);
 	    }
@@ -109,7 +108,7 @@ public class ProgrammingSession implements ActionOutputStream {
 	
 	public void close() {
 		eclipseListenerSet.unregisterListenersInEclipse();
-		git.close();
+		//git.close();
 	}
 
 	public File getActionsFile() {
@@ -121,7 +120,7 @@ public class ProgrammingSession implements ActionOutputStream {
 	}
 	
 	public void setGitRecorder(GitRecorder git) {
-		this.git = git;
+		//this.git = git;
 	}
 
 }

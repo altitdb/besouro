@@ -5,7 +5,7 @@
       <view
             class="br.edu.utfpr.butterfly.plugin.ButterflyView"
             icon="icons/episode.png"
-            id="br.edu.utfpr.butterfly.plugin.ButterflyView"
+            id="butterfly"
             name="Butterfly"
             restorable="true">
       </view>

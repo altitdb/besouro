@@ -47,11 +47,9 @@ public class GitRecorder implements ActionOutputStream {
 				.setCommitter("somename", "someemail")
 				.setMessage("Butterfly automatic message")
 				.call();
-				
 		} catch (Exception e) {
-			// TODO throw new RuntimeException(e);
+			throw new RuntimeException(e);
 		}
-
 	}
 
 	public void setGit(Git git) {
