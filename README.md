@@ -1,20 +1,20 @@
-= Butterfly
+# Butterfly
 
 This is a tool to measure TDD conformance. The classifications are:
 
-==== Test Addition
-==== Test-first
-==== Test-last
-==== Test Driven Development
-==== Refactoring
-==== Unknown
+#### Test Addition
+#### Test-first
+#### Test-last
+#### Test Driven Development
+#### Refactoring
+#### Unknown
 
-= How To Build Butterfly
+# How To Build Butterfly
 
 First of all, you need to download the Eclipse SDK, containing the Eclipse Plug-in Development Environment (PDE). 
-You can download it from here[http://www.eclipse.org/pde/]
+You can download it from [here](http://www.eclipse.org/pde/)
 
-Download Butterfly's source files from here[https://github.com/altitdb/butterfly]. 
+Download Butterfly's source files from [here](https://github.com/altitdb/butterfly).
 You can simply download the files, you can clone it with git, if you want to modify it, 
 or you can fork it in github if you intend to contribute your changes back to Butterfly.
 	
@@ -28,18 +28,18 @@ available in a HTTP URL in order to make the plugin available for installing in 
 
 It should be enough. If you have any problem, don't hesitate to send me an email at altitdb at gmail dot com.
 
-= Installing Butterfly
+# Installing Butterfly
 
 Requirements: Java 11 and Eclipse 2020-03 (4.15.0)
 
-Update Site: https://butterfly-plugin.firebaseapp.com
+Update Site: [https://butterfly-plugin.firebaseapp.com](https://butterfly-plugin.firebaseapp.com)
 
 Launch Eclipse. Select Help -> Install New Software..., and add the update site to the list of available sites. Follow the wizard and you are done!
 
-= Enabling Butterfly
+# Enabling Butterfly
 
 Launch Eclipse. Select Window -> Show View -> Other..., and find for Butterfly view and click in Open. Select your project and click in Play Icon at Butterfly view.
 
-= Giving feedback
+# Giving feedback
 
 Please let me know what do you think about Butterfly. Send me an email at altitdb at gmail dot com anytime!
