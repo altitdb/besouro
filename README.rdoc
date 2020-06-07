@@ -2,12 +2,12 @@
 
 This is a tool to measure TDD conformance. The classifications are:
 
-=== Test Addition
-=== Test-first
-=== Test-last
-=== Test Driven Development
-=== Refactoring
-=== Unknown
+==== Test Addition
+==== Test-first
+==== Test-last
+==== Test Driven Development
+==== Refactoring
+==== Unknown
 
 = How To Build Butterfly
 
@@ -30,9 +30,15 @@ It should be enough. If you have any problem, don't hesitate to send me an email
 
 = Installing Butterfly
 
-Update Site: https://butterfly-plugin.firebaseapp.com/
+Requirements: Java 11 and Eclipse 2020-03 (4.15.0)
 
-Launch Eclipse. Select help -> Install new Software, and add the update site to the list of available sites. Follow the wizard and you are done!
+Update Site: https://butterfly-plugin.firebaseapp.com
+
+Launch Eclipse. Select Help -> Install New Software..., and add the update site to the list of available sites. Follow the wizard and you are done!
+
+= Enabling Butterfly
+
+Launch Eclipse. Select Window -> Show View -> Other..., and find for Butterfly view and click in Open. Select your project and click in Play Icon at Butterfly view.
 
 = Giving feedback
 
