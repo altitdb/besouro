@@ -7,8 +7,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import br.edu.utfpr.butterfly.classifier.Classifier;
-import br.edu.utfpr.butterfly.classifier.TestFirstClassifier;
 import br.edu.utfpr.butterfly.model.DevelopmentType;
 import br.edu.utfpr.butterfly.model.Episode;
 import br.edu.utfpr.butterfly.model.action.Action;

@@ -36,8 +36,7 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	private static final String METHOD_TYPE = "METHOD";
 	private static final String PACKAGE_TYPE = "PACKAGE";
 	private static final String CLASS_TYPE = "CLASS";
-	public static final String JAVA = "java";
-	public static final String CLASS = "Class";
+	private static final String JAVA = "java";
 
 	protected static final String PROP_CURRENT_SIZE = "Current-Size";
 	protected static final String PROP_CLASS_NAME = "Class-Name";
@@ -47,7 +46,6 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 	protected static final String PROP_CURRENT_TEST_ASSERTIONS = "Current-Test-Assertions";
 
 	private ActionOutputStream stream;
-	private Action lastAction;
 
 	public JavaStructureChangeListener(ActionOutputStream stream) {
 		this.stream = stream;
@@ -125,25 +123,21 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 			String name = buildElementName(element.toString());
 			if (name != null && !"".equals(name)) {
 				if (classFileName.toString().contains(TEST_PACKAGE)) {
-					TestAction action;
+					TestAction action = new TestEditingAction(new Date(), element.getResource().getName());
 					boolean isAddMethod = METHOD_TYPE.equals(type) && ADD_OPERATION.equals(operation);
-					if (isAddMethod || (!REMOVE_OPERATION.equals(operation) && lastAction != null && lastAction.isTestCreationAction())) {
+					if (isAddMethod || isTestCreationAction()) {
 						action = new TestCreationAction(new Date(), element.getResource().getName());
-					} else {
-						action = new TestEditingAction(new Date(), element.getResource().getName());
 					}
 					action.setOperator(operation);
 					action.setSubjectType(type);
 					action.setSubjectName(name);
 					this.stream.addAction(action);
-					lastAction = action;
 				} else {
 					CodeEditingAction action = new CodeEditingAction(new Date(), element.getResource().getName());
 					action.setOperator(operation);
 					action.setSubjectType(type);
 					action.setSubjectName(name);
 					this.stream.addAction(action);
-					lastAction = action;
 				}
 			}
 		}
@@ -164,24 +158,20 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 			
 			if (fromName != null && toName != null && !fromName.equals(toName)) {
 				if (classFileName.toString().contains(TEST_PACKAGE)) {
-					TestAction action;
-					if (lastAction != null && lastAction.isTestCreationAction()) {
+					TestAction action = new TestEditingAction(new Date(), javaFile.getName());
+					if (isTestCreationAction()) {
 						action = new TestCreationAction(new Date(), javaFile.getName());
-					} else {
-						action = new TestEditingAction(new Date(), javaFile.getName());
 					}
 					action.setOperator("RENAME");
 					action.setSubjectName(fromName + "=>" + toName);
 					action.setSubjectType(type);
 					this.stream.addAction(action);
-					lastAction = action;
 				} else {
 					CodeEditingAction action = new CodeEditingAction(new Date(), javaFile.getName());
 					action.setOperator("RENAME");
 					action.setSubjectName(fromName + "=>" + toName);
 					action.setSubjectType(type);
 					this.stream.addAction(action);
-					lastAction = action;
 				}
 			}
 		}
@@ -201,27 +191,28 @@ public class JavaStructureChangeListener implements IElementChangedListener {
 			
 			if (fromName != null && toName != null && !fromName.equals(toName)) {
 				if (javaFile.toString().contains(TEST_PACKAGE)) {
-					TestAction action;
-					if (lastAction != null && lastAction.isTestCreationAction()) {
+					TestAction action = new TestEditingAction(new Date(), javaFile.getName());
+					if (isTestCreationAction()) {
 						action = new TestCreationAction(new Date(), javaFile.getName());
-					} else {
-						action = new TestEditingAction(new Date(), javaFile.getName());
 					}
 					action.setOperator("MOVE");
 					action.setSubjectName(fromName + "=>" + toName);
 					action.setSubjectType(type);
 					this.stream.addAction(action);
-					lastAction = action;
 				} else {
 					CodeEditingAction action = new CodeEditingAction(new Date(), javaFile.getName());
 					action.setOperator("MOVE");
 					action.setSubjectName(fromName + "=>" + toName);
 					action.setSubjectType(type);
 					this.stream.addAction(action);
-					lastAction = action;
 				}
 			}
 		}
+	}
+
+	private boolean isTestCreationAction() {
+		Action lastAction = stream.getLastAction();
+		return lastAction != null && lastAction.isTestCreationAction();
 	}
 
 	private String retrieveType(IJavaElement element) {

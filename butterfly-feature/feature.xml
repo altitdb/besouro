@@ -2,7 +2,7 @@
 <feature
       id="butterfly"
       label="Butterfly"
-      version="2.0.9">
+      version="2.0.10">
 
    <description url="https://github.com/altitdb/butterfly">
       This is a tool to measure TDD compliance.
@@ -44,7 +44,7 @@ limitations under the License.
          id="butterfly"
          download-size="0"
          install-size="0"
-         version="2.0.9"
+         version="2.0.10"
          unpack="false"/>
 
 </feature>

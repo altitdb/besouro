@@ -62,4 +62,7 @@ public class ButterflyConfigureListener implements ActionOutputStream {
 		}
 	}
 	
+	public Action getLastAction() {
+		return output.getLastAction();
+	}
 }

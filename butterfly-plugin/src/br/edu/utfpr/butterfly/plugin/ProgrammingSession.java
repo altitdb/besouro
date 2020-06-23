@@ -89,6 +89,10 @@ public class ProgrammingSession implements ActionOutputStream {
 	        errorStorage.log(ex);
 	    }
 	}
+	
+	public Action getLastAction() {
+		return episodeClassifierStream.getLastAction();
+	}
 
 	public void disagreeFromEpisode(Episode episode) {
 		disagreementsStorage.episodeRecognized(episode);
