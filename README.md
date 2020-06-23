@@ -30,7 +30,7 @@ It should be enough. If you have any problem, don't hesitate to send me an email
 
 # Installing Butterfly
 
-Requirements: Java 11 and Eclipse 2020-03 (4.15.0)
+Requirements: Java 11 and Eclipse 2020-06 (4.16.0)
 
 Update Site: [https://butterfly-plugin.firebaseapp.com](https://butterfly-plugin.firebaseapp.com)
 
