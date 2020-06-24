@@ -2,7 +2,8 @@
 <feature
       id="butterfly"
       label="Butterfly"
-      version="2.0.10">
+      version="2.0.10"
+      plugin="butterfly">
 
    <description url="https://github.com/altitdb/butterfly">
       This is a tool to measure TDD compliance.
